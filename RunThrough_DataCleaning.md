@@ -64,7 +64,7 @@ Flags:
 
 Ex.
 ```
-java -jar trimmomatic-0.33.jar PE -phred33 -trimlog ${output}/trimlog.txt ${raw_dir}/${base}_R1_001.fastq.gz ${raw_dir}/${base}_R2_001.fastq.gz ${output}/${base}_R1_PE.fastq.gz ${output}/${base}_R1_SE.fastq.gz ${output}/${base}_R2_PE.fastq.gz ${output}/${base}_R2_SE.fastq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 MAXINFO:40:0.5 MINLEN:36
+java -jar trimmomatic-0.33.jar PE -phred33 -trimlog ${trim_dir}/trimlog.txt ${raw_dir}/${base}_R1_001.fastq.gz ${raw_dir}/${base}_R2_001.fastq.gz ${trim_dir}/${base}_R1_PE.fastq.gz ${trim_dir}/${base}_R1_SE.fastq.gz ${trim_dir}/${base}_R2_PE.fastq.gz ${trim_dir}/${base}_R2_SE.fastq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 MAXINFO:40:0.5 MINLEN:36
 ```
 
 Have trimmed raw data files that can be read into different mappers.
@@ -87,6 +87,8 @@ Flags:
       -M = Mark shorter split hits as secondary (for Picard compatibility)
 
 *Script: [bwa_map.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/bwa_map.sh)* 
+
+Ex.
 ```
 bwa mem -t 8 -M dmel-all-chromosome-r5.57.fasta.gz ${trim_dir}/${base}_R1_PE.fastq.gz ${trim_dir}/${base}_R2_PE.fastq.gz > ${ouput}/${base}_aligned_pe.SAM
 ```
@@ -174,6 +176,19 @@ java -jar /usr/local/picard-tools-1.131/picard.jar CollectInsertSizeMetrics \
     H=/home/paul/episodicData/novoalign/novo_rmd/insert_size_histogram.pdf
 ```
 
+__3.2) Basis of novoalign script:__
+
+Running novoalign for paired files run like below
+
+Ex.
+```
+${novoalign_dir}/novoalign -d ${novo_index} \
+    -f ${trim_dir}/${base}_R1_PE.fastq ${trim_dir}/${base}_R2_PE.fastq \ 
+    -i 500,150 -o SAM > ${novo_dir}/${base}_novo.sam
+```
+
+But due to the high computational demand and limitations with free version of novoalign, running this in parallel more beneficial
+
 __4) Running Novoalign (Running In Parallel)__
  
 __4.1) Make the script to make multiple scripts__
@@ -237,54 +252,24 @@ Flags:
     - q 20 -- quality mapping score of 20 (standard throughout all experiments)
      
 
-*Script: novo_samTobam.sh*
+*Script: [novo_samTobam.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_samTobam.sh)*
+
+Ex.
 ```
-#! /bin/bash
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Path to input directory
-novo_dir=${project_dir}/novo_dir
-
-#Path to output directory
-novo_bam=${project_dir}/novo_bam
-
-files=(${novo_dir}/*.sam)
-
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} .sam`
 samtools view -b -S -q 20 ${novo_dir}/${base}.sam | samtools sort -o ${novo_bam}/${base}.bam
-done
 ```
 
 ____________________________________________________________________________________________________
 ### Merge 
 
-No flags, just merging the two lanes of the illumina sequencing run
+No flags, just merging the two lanes of the illumina sequencing run into one file:
 
-*The script: novo_merge.sh*
+*The script: [novo_merge.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_merge.sh)*
+
+
+Ex.
 ```    
-#!/bin/bash
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Path to input directory
-novo_bam=${project_dir}/novo_bam
-
-#Path to output directory
-novo_merge=${project_dir}/novo_merge
-
-files=(${novo_bam}/*_L001_novo.bam)
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} _L001_novo.bam`
 samtools merge ${novo_merge}/${base}_novo_merge.bam ${novo_bam}/${base}_L001_novo.bam ${novo_bam}/${base}_L002_novo.bam
-done
 ```
 ____________________________________________________________________________________________________
 
@@ -302,39 +287,17 @@ Flags:
     - O -- output
     - VALIDATION_STRINGENCY=SILENT -- stops Picard from reporting every issue that would ultimately be displayed
     - SO=coordinate -- sort order based on coordinate
+    - TMP_DIR -- temporary directory
   
  
-*Script: novo_picard_sort.sh*
+*Script: [novo_picard_sort.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_picard_sort.sh)*
+
+Ex.
 ```
-#!/bin/bash
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Path to input directory
-novo_merge=${project_dir}/novo_merge
-
-#Path to Picard
-pic=/usr/local/picard-tools-1.131/picard.jar
-
-#Path to output directory
-novo_pic=${project_dir}/novo_pic
-
-#Path to tmp
-novo_tmp=${project_dir}/novo_tmp
-
-files=(${novo_merge}/*.bam)
-for file in ${files[@]}
-do
-name=${file}
-
-base=`basename ${name} .bam`
 java -Xmx2g -Djava.io.tmpdir=${novo_tmp} -jar ${pic} SortSam \
 I= ${novo_merge}/${base}.bam \
 O= ${novo_pic}/${base}_novo_sort.bam \
 VALIDATION_STRINGENCY=SILENT SO=coordinate TMP_DIR=${novo_tmp}
-
-done
 ```
 ____________________________________________________________________________________________________
 
@@ -351,29 +314,12 @@ Flags: Similar to above
     - REMOVE_DUPLICATES= true -- get rid of any found duplicated regions
 
 
-*Script: novo_rmd.sh*
+*Script: [novo_rmd.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_rmd.sh)*
+
+Ex.
 ```
-#!/bin/bash
+java -Xmx2g -jar ${picard_dir}/picard.jar MarkDuplicates I= ${novo_pic}/${base}_novo_sort.bam O= ${novo_rmd}/${base}_novo_rmd.bam M= ${novo_rmd}/dupstat.txt VALIDATION_STRINGENCY=SILENT REMOVE_DUPLICATES= true
 
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Path to input directory
-novo_pic=${project_dir}/novo_pic
-
-#Path to Picard
-pic=/usr/local/picard-tools-1.131/picard.jar
-
-#Path to output directory
-novo_rmd=${project_dir}/novo_rmd
-
-files=(${novo_pic}/*)
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} _novo_sort.bam`
-java -Xmx2g -jar ${pic} MarkDuplicates I= ${novo_pic}/${base}_novo_sort.bam O= ${novo_rmd}/${base}_novo_rmd.bam M= ${novo_rmd}/dupstat.txt VALIDATION_STRINGENCY=SILENT REMOVE_DUPLICATES= true
-done
 ```
 ____________________________________________________________________________________________________
 
@@ -385,26 +331,11 @@ Flags:
     - F 0x0004 -- remove any unmapped reads (hexidecimal value for unmapped = 0x0004)
     - b -- ""
 
-*Script: novo_final_qc.sh*
+*Script: [novo_final_qc.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_final_qc.sh)*
+
+Ex.
 ```
-#!/bin/bash
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Path to input directory
-novo_rmd=${project_dir}/novo_rmd
-
-#Path to output directory
-novo_final=${project_dir}/novo_final
-
-files=(${novo_rmd}/*_novo_rmd.bam)
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} _novo_rmd.bam`
 samtools view -q 20 -F 0x0004 -b ${novo_rmd}/${base}_novo_rmd.bam > ${novo_final}/${base}_novo_final.bam
-done
 ```
 ____________________________________________________________________________________________________
 
@@ -412,25 +343,7 @@ ________________________________________________________________________________
 
 Need to merge the base generation additionaly (two sequence runs for ancestor need to merge: MGD2 and MGD)
 
-*Script: merge_anc.sh*
-```
-#!/bin/bash
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Path to final directory
-novo_final=${project_dir}/novo_final
-
-samtools merge ${novo_final}/MGD3_SO_CAGATC_novo_merge_novo_final.bam \
-${novo_final}/MGD2_SO_CAGATC_novo_merge_novo_final.bam \
-${novo_final}/MGD_SO_CAGATC_novo_merge_novo_final.bam
-
-#move unmerged away
-mkdir ${novo_final}/Anc_unmerged
-mv ${novo_final}/ MGD2_SO_CAGATC_novo_merge_novo_final.bam ${novo_final}/Anc_unmerged
-mv ${novo_final}/ MGD_SO_CAGATC_novo_merge_novo_final.bam ${novo_final}/Anc_unmerged
-```
+*Script: [novo_merge_anc.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_merge_anc.sh)*
 
 ____________________________________________________________________________________________________
 
@@ -449,15 +362,9 @@ __2.1) Create .dict file for reference:__
 
 This creates a dictionary file for the ref genome with a header but no sam records (the header is only sequence records)
 
-*script: novo_dict_index.sh*
+*script: [novo_dict_index.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_dict_index.sh)*
 ```
-#! /bin/bash
-
-pic=/usr/local/picard-tools-1.131/picard.jar
-index_dir=/home/paul/episodicData/index_dir
-ref_genome=${index_dir}/dmel-all-chromosome-r5.57_2.fasta
-
-java -jar ${pic} CreateSequenceDictionary R=${ref_genome} O=${index_dir}/dmel-all-chromosome-r5.57_2.dict
+java -jar ${picard_dir}/picard.jar CreateSequenceDictionary R=${reference_genome} O=${index_dir}/dmel-all-chromosome-r5.57_2.dict
 ```
 
 __2.2) Create a .fai to reference genome: __
@@ -477,91 +384,29 @@ Flags:
     - RGPU -- Platform Unit; details on the sequencing unit (i.e run barcode) [None, used for practice]
     - RGSM -- Sample [Using the basename which is each unique sequence]
 
-*Script: novo_readgroups.sh*
+*Script: [novo_readgroups.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_readgroups.sh)*
 ```
-#! /bin/bash
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Path to Picard
-pic=/usr/local/picard-tools-1.131/picard.jar
-
-#Path to .bam files
-novo_final=${project_dir}/novo_final
-
-files=(${novo_final}/*.bam)
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} .bam`
-
-java -jar ${pic} AddOrReplaceReadGroups I=${novo_final}/${base}.bam O=${novo_final}/${base}_RG.bam RGID=L001_L002 RGLB=library1 RGPL=illumina RGPU=None RGSM=${base}
-
-done
+java -jar picard.jar AddOrReplaceReadGroups I=${novo_final}/${base}.bam O=${novo_final}/${base}_RG.bam RGID=L001_L002 RGLB=library1 RGPL=illumina RGPU=None RGSM=${base}
 ```
 
 __4) Index the read group Bam files__
 
 Need to have the .bam files indexed prior to the indel realignment
 
-*Script: novo_indexBam.sh*
+*Script: [novo_indexBam.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_indexBam.sh)*
 ```
-#! /bin/bash
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Path to .bam files
-novo_final=${project_dir}/novo_final
-
-files=(${novo_final}/*_RG.bam)
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} _RG.bam`
 samtools index ${novo_final}/${base}_RG.bam
-done
 ```
 
 __5) Run GATK indel realigner__
 
 GATK indel realigner takes two steps, __1)__ target the indels to be raligned (.intervals file) and __2)__ realign the indels (.realigned files)
 
-*Script: novo_gatk.sh*
+*Script: [novo_gatk.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_gatk.sh)*
 ```
-#!/bin/bash
+java -Xmx8g -jar ${gatk_dir}/GenomeAnalysisTK.jar -I ${novo_final}/${base}_RG.bam -R ${ref_genome} -T RealignerTargetCreator -o ${novo_GATK}/${base}.intervals
 
-#Variable for project name (file name)
-project_name=novo_episodic
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Path to input directory
-novo_final=${project_dir}/novo_final
-
-#Path to output directory
-novo_GATK=${project_dir}/novo_GATK
-
-#Variable for reference genome (non-zipped)
-index_dir=/home/paul/episodicData/index_dir
-ref_genome=${index_dir}/dmel-all-chromosome-r5.57_2.fasta
-
-#Path to GATK
-gatk=/usr/local/gatk/GenomeAnalysisTK.jar
-
-files=(${novo_final}/*_RG.bam)
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} _RG.bam`
-
-java -Xmx8g -jar ${gatk} -I ${novo_final}/${base}_RG.bam -R ${ref_genome} -T RealignerTargetCreator -o ${novo_GATK}/${base}.intervals
-
-java -Xmx8g -jar ${gatk} -I ${novo_final}/${base}_RG.bam -R ${ref_genome} -T IndelRealigner -targetIntervals ${novo_GATK}/${base}.intervals -o ${novo_GATK}/${base}_realigned.bam
-
-done
+java -Xmx8g -jar ${gatk_dir}/GenomeAnalysisTK.jar -I ${novo_final}/${base}_RG.bam -R ${ref_genome} -T IndelRealigner -targetIntervals ${novo_GATK}/${base}.intervals -o ${novo_GATK}/${base}_realigned.bam
 ```
 
 The above steps for section 3 can be repeated for other mappers (with some changes to parameters) to have three sets of data files for 13 populations with final .bam files for further analysis
