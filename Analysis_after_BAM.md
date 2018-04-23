@@ -38,7 +38,7 @@ ________________________________________________________________________________
 
 - Some scripts require the .sync file split into chromosomes: script below shows method of splitting Novoalign sync
 
-**Script:** [novo_split_sync_Chromosome.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_split_sync_Chromosome.sh)
+***Script:** [novo_split_sync_Chromosome.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_split_sync_Chromosome.sh)*
 _______________________________________________________________________________________
 
 ## 1) Tajima's Pi of non-overlapping windows for each sequence
@@ -53,7 +53,7 @@ Flags:
     - Q -- minimum base quality (already filtered for 20, default is 13, just set to 0 and not worry about it)
     - f -- path to reference sequence
     
-*Script: [novo_PI_pileups.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_PI_pileups.sh)*
+***Script:** [novo_PI_pileups.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_PI_pileups.sh)*
 
 Ex.
 ```
@@ -78,12 +78,15 @@ Flags:
     - min-covered-fraction [0.5] -- minimum percentage of sites having sufficient coverage in the given window -- 0.5 from example
 
 
-*Script: [novo_tajima_pi.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_tajima_pi.sh)*
+***Script:** [novo_tajima_pi.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_tajima_pi.sh)*
 
 Ex. 
 ```
 perl ${popoolation}/Variance-sliding.pl --input ${input}/${base}.pileup --output ${output}/${base}.pi --measure pi --window-size 10000 --step-size 10000 --min-count 2 --min-coverage 4 --max-coverage 400 --min-qual 20 --pool-size 120 --fastq-type sanger --snp-output ${output}/${base}.snps --min-covered-fraction 0.5
 ```
+
+$$$$$$$$$$$$
+
 ### Create plots of tajima Pi data
 
 On local machine, this R function can run each .pi file to output a plot
