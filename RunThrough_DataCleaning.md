@@ -368,7 +368,7 @@ This creates a dictionary file for the ref genome with a header but no sam recor
 java -jar ${picard_dir}/picard.jar CreateSequenceDictionary R=${reference_genome} O=${index_dir}/dmel-all-chromosome-r5.57_2.dict
 ```
 
-__2.2) Create a .fai to reference genome: __
+__2.2) Create a .fai to reference genome:__
 ```
 samtools faidx dmel-all-chromosome-r5.57_2.fasta
 ```
