@@ -16,9 +16,11 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________________
 ____________________________________________________________________________________________________
 
-### **Sections 1:** Quality checks on data and trimming
+## **Sections 1:** Quality checks on data and trimming
 
- md5sum all raw files: changes depending on the file name
+### md5sum:
+
+md5sum all raw files: changes depending on the file name
 
 ```
 md5sum - c md5.txt
@@ -92,14 +94,24 @@ ________________________________________________________________________________
 
 ### BWA mapping
 
+__1) Running bwa mem mapping__
 Flags:
 
       -t 8 = number of processors
+      
       -M = Mark shorter split hits as secondary (for Picard compatibility)
 
 Script:  
 ```
 #!/bin/bash
+
+project_name=episodic_data
+project_dir=/home/paul/episodicData
+bwa_path=/usr/local/bwa/0.7.8
+index_dir=${project_dir}/index_dir
+ref_genome=${index_dir}/dmel-all-chromosome-r5.57.fasta.gz
+trim_dir=${project_dir}/trim_dir
+sam_dir=${project_dir}/sam_dir
 
 cd ${bwa_path}
 files=(${trim_dir}/*_R1_PE.fastq.gz)
@@ -112,6 +124,64 @@ bwa mem -t 8 -M ${ref_genome} ${trim_dir}/${base}_R1_PE.fastq.gz ${trim_dir}/${b
 done
 ```
 
+
+### Bowtie2 mapping: Steps needed to index reference
+
+__1) Build proper index:__
+
+__1.1) Need unzipped index sequence__
+
+```
+gunzip /home/paul/episodicData/index_dir/dmel-all-chromosome-r5.57_2.fasta.gz
+```
+
+__1.2) build bowtie index 
+
+```
+#! /bin/bash
+
+project_dir1=/home/paul/episodicData
+project_dir=/home/paul/episodicData/bowtie
+
+index_dir=${project_dir1}/index_dir
+ref_genome=${index_dir}/dmel-all-chromosome-r5.57_2.fasta
+trim_dir=${project_dir}/trim_dir
+bowtie2_dir=/usr/local/bowtie2/2.2.2
+
+
+${bowtie2_dir}/bowtie2-build ${ref_genome} ${project_dir}/bowtie_indexes/dmel-all-chromosome-r5.57_2
+```
+__2) Run Bowtie2 mapping 
+
+Flags:
+ - x = indexed reference
+ 
+ - 1 = forward end
+ 
+ - 2 = reverse end
+ 
+ - S = same output
+```
+#! /bin/bash
+
+project_name=episodic_data_bowtie
+project_dir1=/home/paul/episodicData
+project_dir=/home/paul/episodicData/bowtie
+index_dir=${project_dir1}/index_dir
+ref_genome=${index_dir}/dmel-all-chromosome-r5.57.fasta.gz
+ref_genome_base=${project_dir}/bowtie_indexes/dmel-all-chromosome-r5.57_2
+trim_dir=${project_dir1}/trim_dir
+bowtie2_dir=/usr/local/bowtie2/2.2.2
+sam_dir=${project_dir}/sam_dir
+
+files=(${trim_dir}/*_R1_PE.fastq.gz)
+for file in ${files[@]}
+do
+name=${file}
+base=`basename ${name} _R1_PE.fastq.gz`
+${bowtie2_dir}/bowtie2 -x ${ref_genome_base} -1 ${trim_dir}/${base}_R1_PE.fastq.gz -2 ${trim_dir}/${base}_R2_PE.fastq.gz -S ${sam_dir}/${base}_bowtie_pe.sam
+done
+```
 
 _________________________________________________________________________________________________________________________
 ### Mapping with Novoalign and the subsequent steps to clean data: Many steps for set up
@@ -265,8 +335,6 @@ Rezip files in trim_dir (saves space)
 gzip *.fastq
 ```
 
-### Left with mapped sequences with Novoalign: can continue with cleaning the sequence data to final .bam files
-
 ____________________________________________________________________________________________________
 ____________________________________________________________________________________________________
 ____________________________________________________________________________________________________
@@ -274,6 +342,8 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________________
 
 ## **Section 3:** Methods for cleaning data for one mapper (Novoalign) that mirrors methods followed for BWA mem and Bowtie2
+
+Have three sets of mapped data: the following methods (for Novoalign) is an example of next steps, but are done identically from here to final bams.
 
 ### Change SAM files to BAM files: novo_samTobam.sh
 
