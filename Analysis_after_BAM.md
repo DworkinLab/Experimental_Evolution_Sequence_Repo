@@ -36,9 +36,9 @@ ________________________________________________________________________________
 
 - need to know the order of the .sync files: will be based on the order of the .bam files read into .sync 
 
-- Some scripts require the .sync file split into chromosomes: script below shows method of splitting
+- Some scripts require the .sync file split into chromosomes: script below shows method of splitting Novoalign sync
 
-**Script:** [novo_split_sync2chromosomes.sh](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/novo_split_sync2chromosomes.sh)
+**Script:** [novo_split_sync_Chromosome.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_split_sync_Chromosome.sh)
 _______________________________________________________________________________________
 
 ## 1) Tajima's Pi of non-overlapping windows for each sequence
