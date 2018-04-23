@@ -252,9 +252,9 @@ java -jar /usr/local/picard-tools-1.131/picard.jar CollectInsertSizeMetrics \
     H=/home/paul/episodicData/novoalign/novo_rmd/insert_size_histogram.pdf
 ```
 
-__5) Running Novoalign (Running In Parallel)__
+__4) Running Novoalign (Running In Parallel)__
  
-__5.1) Make the script to make multiple scripts__
+__4.1) Make the script to make multiple scripts__
 
 Script to create many scripts (that run in parallel)
 
@@ -288,7 +288,7 @@ echo "${novoalign}/novoalign -d ${novo_index} -f ${trim_dir}/${base}_R1_PE.fastq
 done
 ```
 
-__5.2) Create script to call all and run in parallel (use "&" which puts job in background then multiple can run at a time)__
+__4.2) Create script to call all and run in parallel (use "&" which puts job in background then multiple can run at a time)__
 
 This creates a file that has all the scripts made in step 5.1) in a list with ''&'' at the end to run in parrallel
 
@@ -317,13 +317,13 @@ echo "${map_scripts}/${base}.sh &" >> ${scripts}/novo_parallel_map.sh
 done
 ```
 
-__5.3) Run novo_parallel_map.sh__
+__4.3) Run novo_parallel_map.sh__
 
 ```
 novo_parallel_map.sh
 ```
 
-__6) Save space again with trimmed files: Rezip__
+__5) Save space again with trimmed files: Rezip__
 
 Rezip files in trim_dir (saves space)
 
