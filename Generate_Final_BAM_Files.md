@@ -1,3 +1,117 @@
+# Full run through of all sequence data - Trimming to Final .bam file format:
+____________________________________________________________________________________________________
+
+## Sections of file
+
+**Sections 1:** Quality checks on data and trimming
+
+**Section 2:** Mapping with BWA mem, Bowtie2 and Novoalign (3 mappers to ensure no false positive positions)
+
+**Section 3:** Methods for cleaning data for one mapper (Novoalign) that mirrors methods followed for BWA mem and Bowtie2
+
+
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+
+### **Sections 1:** Quality checks on data and trimming
+
+ md5sum all raw files: changes depending on the file name
+
+```
+md5sum - c md5.txt
+```
+
+### Fastqc; run as a quality control and view
+
+```
+fastqc -o ${output} ${input}/*.fastq.gz
+```
+
+### Index sequence for mapping:
+
+Version 5.57 used as the reference sequence for *Drosophila melanogaster* obtained from [flybase.org](http://flybase.org/)
+```
+curl -O ftp://ftp.flybase.net/genomes/Drosophila_melanogaster/dmel_r5.57_FB2014_03/fasta/dmel-all-chromosome-r5.57.fasta.gz
+
+bwa index dmel-all-chromosome-r5.57.fasta.gz
+```
+__________________________________________________________________________________
+
+### Trimmomatic
+
+Flags:
+
+    -phred33 = may not need to be specified
+    -trimlog = log of trim outputs
+    -IlluminaClip = adapter removal (${adapter})
+    -LEADING & TRAILING = 3; removal at start end end if below quality
+    -MINLEN = minimum length of 36
+    -MAXINFO = adaptive quality (balance b/w length and quality) = 0.5
+
+Script:  
+```
+#! /bin/bash
+
+#Variables for script:
+project_name=episodic_data
+project_dir=/home/paul/episodicData
+raw_dir=${project_dir}/raw_dir
+
+trimmomatic=/usr/local/trimmomatic
+trim=${trimmomatic}/trimmomatic-0.33.jar
+
+adapt_path=/usr/local/trimmomatic/adapters
+adapter=${adapt_path}/TruSeq3-PE.fa:2:30:10
+
+trim_dir=${project_dir}/trim_dir
+
+#Loop to run on all raw (pairded) data files)
+files=(${raw_dir}/*_R1_001.fastq.gz)
+for file in ${files[@]} 
+do
+name=${file}
+base=`basename ${name} _R1_001.fastq.gz`
+java -jar ${trim} PE -phred33 -trimlog ${trim_dir}/trimlog.txt ${raw_dir}/${base}_R1_001.fastq.gz ${raw_dir}/${base}_R2_001.fastq.gz ${trim_dir}/${base}_R1_PE.fastq.gz ${trim_dir}/${base}_R1_SE.fastq.gz ${trim_dir}/${base}_R2_PE.fastq.gz ${trim_dir}/${base}_R2_SE.fastq.gz ILLUMINACLIP:${adapter} LEADING:3 TRAILING:3 MAXINFO:40:0.5 MINLEN:36
+
+done
+```
+
+Have trimmed raw data files that can be read into different mappers.
+
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+
+### BWA mapping
+
+Flags:
+
+      -t 8 = number of processors
+      -M = Mark shorter split hits as secondary (for Picard compatibility)
+
+Script:  
+```
+#!/bin/bash
+
+cd ${bwa_path}
+files=(${trim_dir}/*_R1_PE.fastq.gz)
+
+for file in ${files[@]}
+do
+name=${file}
+base=`basename ${name} _R1_PE.fastq.gz`
+bwa mem -t 8 -M ${ref_genome} ${trim_dir}/${base}_R1_PE.fastq.gz ${trim_dir}/${base}_R2_PE.fastq.gz > ${sam_dir}/${base}_aligned_pe.SAM
+done
+```
+
+
+
+
 # Mapping with Novoalign and the subsequent steps to clean data:
 _________________________________________________________________________________________________________________________
 _________________________________________________________________________________________________________________________
@@ -108,16 +222,6 @@ java -jar /usr/local/picard-tools-1.131/picard.jar CollectInsertSizeMetrics \
     I=/home/paul/episodicData/novoalign/novo_rmd/F115ConR1_TAGCTT_novo_merge_novo_rmd.bam \
     O=/home/paul/episodicData/novoalign/novo_rmd/insert_size_metrics.txt \
     H=/home/paul/episodicData/novoalign/novo_rmd/insert_size_histogram.pdf
-```
-
-Example output:
-
-```
-MEDIAN_INSERT_SIZE|MEDIAN_ABSOLUTE_DEVIATION|MIN_INSERT_SIZE|MAX_INSERT_SIZE|MEAN_INSERT_SIZE|STANDARD_DEVIATION|READ_PAIRS|PAIR_ORIENTATION|WIDTH_OF_10_PERCENT|WIDTH_OF_20_PERCENT|WIDTH_OF_30_PERCENT|WIDTH_OF_40_PERCENT|WIDTH_OF_50_PERCENT|WIDTH_OF_60_PERCENT|WIDTH_OF_70_PERCENT|WIDTH_OF_80_PERCENT|WIDTH_OF_90_PERCENT|WIDTH_OF_99_PERCENT|SAMPLE|LIBRARY|READ_GROUP
-
-542|94|30|28389293|542.112611|156.897954|25505882|FR|35|69|107|145|189|241|305|391|533|893  
-     
-For generation 115 alone: mean = 542, SD = 156
 ```
 
 ### Running Novoalign (File By File)
@@ -269,8 +373,12 @@ gzip *.fastq
 ```
 
 ### Left with mapped sequences with Novoalign: can continue with cleaning the sequence data to final .bam files
-____________________________________________________________________________________________________________________________________
-_________________________________________________________________________________________________________________________
+
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
 
 ## Cleaning the aligned Data
 
