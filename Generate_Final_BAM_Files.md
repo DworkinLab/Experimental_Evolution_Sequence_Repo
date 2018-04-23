@@ -135,7 +135,7 @@ __1.1) Need unzipped index sequence__
 gunzip /home/paul/episodicData/index_dir/dmel-all-chromosome-r5.57_2.fasta.gz
 ```
 
-__1.2) build bowtie index 
+__1.2) build bowtie index__
 
 ```
 #! /bin/bash
@@ -151,7 +151,7 @@ bowtie2_dir=/usr/local/bowtie2/2.2.2
 
 ${bowtie2_dir}/bowtie2-build ${ref_genome} ${project_dir}/bowtie_indexes/dmel-all-chromosome-r5.57_2
 ```
-__2) Run Bowtie2 mapping 
+__2) Run Bowtie2 mapping__
 
 Flags:
  - x = indexed reference
@@ -327,7 +327,7 @@ __5.3) Run novo_parallel_map.sh__
 novo_parallel_map.sh
 ```
 
-__6) Save space again with trimmed files: Rezip
+__6) Save space again with trimmed files: Rezip__
 
 Rezip files in trim_dir (saves space)
 
