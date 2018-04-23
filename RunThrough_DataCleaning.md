@@ -60,32 +60,11 @@ Flags:
     -MINLEN = minimum length of 36
     -MAXINFO = adaptive quality (balance b/w length and quality) = 0.5
 
-*Script: trim.sh*
+*Script: [trim.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/trim.sh)*
+
+Ex.
 ```
-#! /bin/bash
-
-#Variables for script:
-project_name=episodic_data
-project_dir=/home/paul/episodicData
-raw_dir=${project_dir}/raw_dir
-
-trimmomatic=/usr/local/trimmomatic
-trim=${trimmomatic}/trimmomatic-0.33.jar
-
-adapt_path=/usr/local/trimmomatic/adapters
-adapter=${adapt_path}/TruSeq3-PE.fa:2:30:10
-
-trim_dir=${project_dir}/trim_dir
-
-#Loop to run on all raw (pairded) data files)
-files=(${raw_dir}/*_R1_001.fastq.gz)
-for file in ${files[@]} 
-do
-name=${file}
-base=`basename ${name} _R1_001.fastq.gz`
-java -jar ${trim} PE -phred33 -trimlog ${trim_dir}/trimlog.txt ${raw_dir}/${base}_R1_001.fastq.gz ${raw_dir}/${base}_R2_001.fastq.gz ${trim_dir}/${base}_R1_PE.fastq.gz ${trim_dir}/${base}_R1_SE.fastq.gz ${trim_dir}/${base}_R2_PE.fastq.gz ${trim_dir}/${base}_R2_SE.fastq.gz ILLUMINACLIP:${adapter} LEADING:3 TRAILING:3 MAXINFO:40:0.5 MINLEN:36
-
-done
+java -jar trimmomatic-0.33.jar PE -phred33 -trimlog ${output}/trimlog.txt ${raw_dir}/${base}_R1_001.fastq.gz ${raw_dir}/${base}_R2_001.fastq.gz ${output}/${base}_R1_PE.fastq.gz ${output}/${base}_R1_SE.fastq.gz ${output}/${base}_R2_PE.fastq.gz ${output}/${base}_R2_SE.fastq.gz ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 MAXINFO:40:0.5 MINLEN:36
 ```
 
 Have trimmed raw data files that can be read into different mappers.
@@ -105,30 +84,11 @@ __1) Running bwa mem mapping__
 Flags:
 
       -t 8 = number of processors
-      
       -M = Mark shorter split hits as secondary (for Picard compatibility)
 
-Script:  
+*Script: [bwa_map.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/bwa_map.sh)* 
 ```
-#!/bin/bash
-
-project_name=episodic_data
-project_dir=/home/paul/episodicData
-bwa_path=/usr/local/bwa/0.7.8
-index_dir=${project_dir}/index_dir
-ref_genome=${index_dir}/dmel-all-chromosome-r5.57.fasta.gz
-trim_dir=${project_dir}/trim_dir
-sam_dir=${project_dir}/sam_dir
-
-cd ${bwa_path}
-files=(${trim_dir}/*_R1_PE.fastq.gz)
-
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} _R1_PE.fastq.gz`
-bwa mem -t 8 -M ${ref_genome} ${trim_dir}/${base}_R1_PE.fastq.gz ${trim_dir}/${base}_R2_PE.fastq.gz > ${sam_dir}/${base}_aligned_pe.SAM
-done
+bwa mem -t 8 -M dmel-all-chromosome-r5.57.fasta.gz ${trim_dir}/${base}_R1_PE.fastq.gz ${trim_dir}/${base}_R2_PE.fastq.gz > ${ouput}/${base}_aligned_pe.SAM
 ```
 ____________________________________________________________________________________________________
 
@@ -144,49 +104,26 @@ gunzip /home/paul/episodicData/index_dir/dmel-all-chromosome-r5.57_2.fasta.gz
 
 __1.2) build bowtie index__
 
+*Script: [bowtie2_buildIndex.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/bowtie2_buildIndex.sh)*
+
+Ex.
 ```
-#! /bin/bash
-
-project_dir1=/home/paul/episodicData
-project_dir=/home/paul/episodicData/bowtie
-
-index_dir=${project_dir1}/index_dir
-ref_genome=${index_dir}/dmel-all-chromosome-r5.57_2.fasta
-trim_dir=${project_dir}/trim_dir
-bowtie2_dir=/usr/local/bowtie2/2.2.2
-
-
-${bowtie2_dir}/bowtie2-build ${ref_genome} ${project_dir}/bowtie_indexes/dmel-all-chromosome-r5.57_2
+${bowtie2_dir}/bowtie2-build ${ref_genome_dir}/dmel-all-chromosome-r5.57_2.fasta ${ref_genome_dir}/bowtie_indexes/dmel-all-chromosome-r5.57_2
 ```
 __2) Run Bowtie2 mapping__
 
 Flags:
 
-    -x = indexed reference
+    - x = indexed reference
     - 1 = forward end
     - 2 = reverse end
     - S = sam output
-    
+
+*Script: [bowtie2_map.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/bowtie2_map.sh)*
+
+Ex.
 ```
-#! /bin/bash
-
-project_name=episodic_data_bowtie
-project_dir1=/home/paul/episodicData
-project_dir=/home/paul/episodicData/bowtie
-index_dir=${project_dir1}/index_dir
-ref_genome=${index_dir}/dmel-all-chromosome-r5.57.fasta.gz
-ref_genome_base=${project_dir}/bowtie_indexes/dmel-all-chromosome-r5.57_2
-trim_dir=${project_dir1}/trim_dir
-bowtie2_dir=/usr/local/bowtie2/2.2.2
-sam_dir=${project_dir}/sam_dir
-
-files=(${trim_dir}/*_R1_PE.fastq.gz)
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} _R1_PE.fastq.gz`
-${bowtie2_dir}/bowtie2 -x ${ref_genome_base} -1 ${trim_dir}/${base}_R1_PE.fastq.gz -2 ${trim_dir}/${base}_R2_PE.fastq.gz -S ${sam_dir}/${base}_bowtie_pe.sam
-done
+${bowtie2_dir}/bowtie2 -x ${bowtie2-build_dir} -1 ${trim_dir}/${base}_R1_PE.fastq.gz -2 ${trim_dir}/${base}_R2_PE.fastq.gz -S ${output}/${base}_bowtie_pe.sam
 ```
 
 _________________________________________________________________________________________________________________________
@@ -199,28 +136,13 @@ __1) Novoindex reference (index reference genome)__
 
 The reference genome needs to be indexed for novoalign mapping (with novoindex)
 
-*Script: novo_index.sh*
+*Script: [novo_index.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_index.sh)*
 
+Ex.
 ```
-#! /bin/bash
-
-#Create variable for location of reference genome (fasta vs. fasta.gz?)
-ref_genome=/home/paul/episodicData/index_dir/dmel-all-chromosome-r5.57_2.fasta
-
-#Variable for project
-project_dir=/home/paul/episodicData/novoalign
-
-#Variable for novoalign
-novoalign=/usr/local/novoalign
-
-#Variable for output directory
-novo_index=${project_dir}/novo_index
-
-#Index the reference with novoindex
-
-${novoalign}/novoindex ${novo_index}/dmel-all-chromosome-r5.57_2.nix  ${ref_genome}
-
+${novoalign_die}/novoindex ${novo_index}/dmel-all-chromosome-r5.57_2.nix  ${reference_genome}
 ```
+
 __2) Unzip trimmed Files__
 
 Note: Compressed read files are not supported in unlicensed versions.
@@ -256,68 +178,29 @@ __4) Running Novoalign (Running In Parallel)__
  
 __4.1) Make the script to make multiple scripts__
 
-Script to create many scripts (that run in parallel)
+Script to create many scripts (that run in parallel) (echo each line for each file)
 
-*Script: novo_map_scriptMaker.sh*
+*Script: [novo_map_scriptMaker.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_map_scriptMaker.sh)*
+
+Ex.
 ```
-#! /bin/bash
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Create variable for reference genome
-novo_index=${project_dir}/novo_index/dmel-all-chromosome-r5.57_2.nix
-
-#Variable for path to Novoalign
-novoalign=/usr/local/novoalign
-
-#Path the trim outputs to be mapped
-trim_dir=/home/paul/episodicData/trim_dir
-
-#Path to output directory
-novo_dir=${project_dir}/novo_dir
-
-files=(${trim_dir}/*_R1_PE.fastq)
-
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} _R1_PE.fastq`
-echo "${novoalign}/novoalign -d ${novo_index} -f ${trim_dir}/${base}_R1_PE.fastq ${trim_dir}/${base}_R2_PE.fastq -i 500,150 -o SAM > ${novo_dir}/${base}_novo.sam" > ./split_mappingScripts/${base}.sh
-
-done
+echo "${novoalign_dir}/novoalign -d ${novo_index} -f ${trim_dir}/${base}_R1_PE.fastq ${trim_dir}/${base}_R2_PE.fastq -i 500,150 -o SAM > ${output}/${base}_novo.sam" > ./split_mappingScripts/${base}.sh
 ```
 
 __4.2) Create script to call all and run in parallel (use "&" which puts job in background then multiple can run at a time)__
 
 This creates a file that has all the scripts made in step 5.1) in a list with ''&'' at the end to run in parrallel
 
-*Script: novo_createParallel_scipt.sh*
+*Script: [novo_createParallel_scipt.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_createParallel_scipt.sh)*
+
+Ex.
 ```
-#! /bin/bash
-
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-# Variable for each script location
-map_scripts=${project_dir}/novo_scripts/split_mappingScripts
-
-#Variable for location of whole script (novo_scripts)
-scripts=${project_dir}/novo_scripts
-
-
-files=(${map_scripts}/*.sh)
-
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} .sh`
 echo "${map_scripts}/${base}.sh &" >> ${scripts}/novo_parallel_map.sh
-
-done
 ```
 
 __4.3) Run novo_parallel_map.sh__
+
+Running this line runs each sequence through novoalign in parallel
 
 ```
 novo_parallel_map.sh
