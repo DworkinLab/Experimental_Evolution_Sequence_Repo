@@ -87,6 +87,9 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________________
 ____________________________________________________________________________________________________
 
+## **Section 2:** Mapping with BWA mem, Bowtie2 and Novoalign (3 mappers to ensure no false positive positions)
+_________________________________________________________________________________________________________________________
+
 ### BWA mapping
 
 Flags:
@@ -110,55 +113,18 @@ done
 ```
 
 
-
-
-# Mapping with Novoalign and the subsequent steps to clean data:
 _________________________________________________________________________________________________________________________
-_________________________________________________________________________________________________________________________
+### Mapping with Novoalign and the subsequent steps to clean data: Many steps for set up
 
-## Running Novoalign mapper
-
-Starting with sequence files that have already been inspected with md5sum and fastqc and have been trimmed using trimmomatic (See other files for running trimmomatic)
+**Running Novoalign mapper**
 
 [Novoalign tutorial](http://www.novocraft.com/documentation/novoalign-2/novoalign-ngs-quick-start-tutorial/basic-short-read-mapping/)
 
-### Need to create directory for project and to house mapping outputs
 
-```
-# Project Directory
-mkdir novoalign 
-```
-
-```
-# mapping outputs
-mkdir novo_dir
-```
-
-### Find path to call Novoalign variable
-
-```
-#Variable for novoalign
-novoalign=/usr/local/novoalign
-```
-
-
-### Make a scripts directory to house scripts be ran 
-
-```
-mkdir novo_scripts
-```
-
-### Novoindex reference
-
-Need index dir for novoindex files
-
-```
-mkdir novo_index
-```
-
+__1) Novoindex reference__
 The reference genome needs to be indexed for novoalign mapping (with novoindex)
 
-Script: novo_index.sh
+*Script: novo_index.sh*
 
 ```
 #! /bin/bash
@@ -180,23 +146,18 @@ novo_index=${project_dir}/novo_index
 ${novoalign}/novoindex ${novo_index}/dmel-all-chromosome-r5.57_2.nix  ${ref_genome}
 
 ```
-
-
-### Unzip Files
+__2) Unzip trimmed Files__
 
 Note: Compressed read files are not supported in unlicensed versions.
 
  - The unlicensed version of Novoalign (used here) does not support the zipped files, so need to unzip trimmomatic outputs
 
 ```
-#From trim_dir
-
 gunzip *.gz
 ```
 
-### Novoalign 
 
-Flags: 
+__3) Novoalign Flags:__
 
 - d -- Full pathname of indexed reference sequence from novoindex
 
@@ -211,7 +172,7 @@ Flags:
      
      - using 500, 150 (below)
 
-### Checking insert Size
+__4) Checking insert Size__
 
 Using output from Picard Sort (if available) from Bowtie2 or BWA mem previously (before removing duplicates) use Picard CollectInsertSizeMetrics.jar to get summary statistics on file for insert size and other information
 
@@ -224,68 +185,14 @@ java -jar /usr/local/picard-tools-1.131/picard.jar CollectInsertSizeMetrics \
     H=/home/paul/episodicData/novoalign/novo_rmd/insert_size_histogram.pdf
 ```
 
-### Running Novoalign (File By File)
+__5) Running Novoalign (Running In Parallel)__
+ 
 
-This process will run one file at a time
+__5.1) Make the script to make multiple scripts__
 
-The script: novo_map.sh
-```
-#! /bin/bash
+Script to create many scripts (that run in parallel)
 
-#Variable for project:
-project_dir=/home/paul/episodicData/novoalign
-
-#Create variable for reference genome
-novo_index=${project_dir}/novo_index/dmel-all-chromosome-r5.57_2.nix
-
-#Variable for path to Novoalign
-novoalign=/usr/local/novoalign
-
-#Path the trim outputs to be mapped
-trim_dir=/home/paul/episodicData/trim_dir
-
-#Path to output directory for mapped files
-novo_dir=${project_dir}/novo_dir
-
-files=(${trim_dir}/*_R1_PE.fastq)
-
-for file in ${files[@]}
-do
-name=${file}
-base=`basename ${name} _R1_PE.fastq`
-
-${novoalign}/novoalign -d ${novo_index} \
-    -f ${trim_dir}/${base}_R1_PE.fastq ${trim_dir}/${base}_R2_PE.fastq \ 
-    -i 500,150 -o SAM > ${novo_dir}/${base}_novo.sam
-
-done
-```
-
-This takes a long time, as the unlicensed version can only uses 1 thread (100% computer)
-
-*** From novoalign reference manual: -c 99 Sets the number of threads to be used. On licensed versions it defaults 
-to the number of CPUs as reported by sysinfo(). On free version the option is disabled ***
-
-### Running Novoalign (Running In Parallel)
-
-A solution to run each file seperatly in a simple splitting method
-
-*** alternative that may be an option: add the & after the code in the for Loop (before the done) and it should push that "for" to the background and run the next file in sequence *** 
-
-
-__1) Make the script to make multiple scripts__
-
-Make dir for all output scripts: 
-
-```
-mkdir split_mappingScripts
-```
-
-Script to create many scripts
-
-- each different file normally looped through one by one above are put into a seperate script
-
-Script: novo_map_scriptMaker.sh
+*Script: novo_map_scriptMaker.sh*
 ```
 #! /bin/bash
 
@@ -315,13 +222,11 @@ echo "${novoalign}/novoalign -d ${novo_index} -f ${trim_dir}/${base}_R1_PE.fastq
 done
 ```
 
-__2) Create script to call all and run in parallel (use "&" which puts job in background then multiple can run at a time)__
+__5.2) Create script to call all and run in parallel (use "&" which puts job in background then multiple can run at a time)__
 
-This creates a file that has all the scripts made in step 1) in a list with ''&'' at the end to run in parrallel
+This creates a file that has all the scripts made in step 5.1) in a list with ''&'' at the end to run in parrallel
 
-One method to run only half is make files/basename based on lane (i.e 001 or 002)
-
-Script: novo_createParallel_scipt.sh
+*Script: novo_createParallel_scipt.sh*
 ```
 #! /bin/bash
 
@@ -346,28 +251,16 @@ echo "${map_scripts}/${base}.sh &" >> ${scripts}/novo_parallel_map.sh
 done
 ```
 
-__3) Change permissions and run novo_parallel_map.sh__
-
-If needed based on the computer space available, change input parametes to run subsets on different days (one option above)
-
-Run on screen
-
-Screen can be named with -S (ex. screen -S IDENTIFIERTITLE)
-
-Can save all outputs of screen using script (ex. script LOGTITLE.log) and finish script with "exit"
+__5.3) Run novo_parallel_map.sh__
 
 ```
 novo_parallel_map.sh
 ```
 
-This should map each file seperate in unison
-
-
-### Save space again with trimmed files: Rezip
+__6) Save space again with trimmed files: Rezip
 
 Rezip files in trim_dir (saves space)
 
-From the trim_dir:
 ```
 gzip *.fastq
 ```
@@ -380,9 +273,7 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________________
 ____________________________________________________________________________________________________
 
-## Cleaning the aligned Data
-
-__Steps used for all mapping outputs: changing parameters for input/output directories__
+## **Section 3:** Methods for cleaning data for one mapper (Novoalign) that mirrors methods followed for BWA mem and Bowtie2
 
 ### Change SAM files to BAM files: novo_samTobam.sh
 
@@ -619,7 +510,7 @@ mv ${novo_final}/ MGD2_SO_CAGATC_novo_merge_novo_final.bam ${novo_final}/Anc_unm
 mv ${novo_final}/ MGD_SO_CAGATC_novo_merge_novo_final.bam ${novo_final}/Anc_unmerged
 ```
 
-### Indel Realigner with GATK
+### Indel Realigner with GATK (6 steps)
 
 
 __1) Need an unzipped copy of the reference genome__
