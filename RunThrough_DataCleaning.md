@@ -1,4 +1,4 @@
-# Full run through of all sequence data - Trimming to Final .bam file format:
+# Full run through of all sequence data - Trimming to Final .bam file format and creating .sync file:
 ____________________________________________________________________________________________________
 
 ## Sections of file
@@ -9,6 +9,7 @@ ________________________________________________________________________________
 
 **Section 3:** Methods for cleaning data for one mapper (Novoalign) that mirrors methods followed for BWA mem and Bowtie2
 
+**Section 4:** Create mpileup and .sync file for analysis
 
 ____________________________________________________________________________________________________
 ____________________________________________________________________________________________________
@@ -410,3 +411,48 @@ java -Xmx8g -jar ${gatk_dir}/GenomeAnalysisTK.jar -I ${novo_final}/${base}_RG.ba
 ```
 
 The above steps for section 3 can be repeated for other mappers (with some changes to parameters) to have three sets of data files for 13 populations with final .bam files for further analysis
+
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+____________________________________________________________________________________________________
+
+
+## **Section 4:** Create mpileup and .sync file for analysis
+
+General here for novoalign: but similar for other mappers again
+
+### Create mpileup
+
+Flags:
+
+    - B -- disable BAQ (base alignment quality) computation, helps to stop false SNPs passing through due to misalignment
+    - Q -- minimum base quality (already filtered for 20, default is 13, just set to 0 and not worry about it)
+    - f -- path to reference sequence
+    
+
+*Script: [novo_mpileup.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_mpileup.sh)*
+
+Ex.
+```
+samtools mpileup -B -Q 0 -f ${reference_genome} ${novo_final}/*.bam > ${novo_mpileup}/${project_name}.mpileup
+```
+
+### Create .sync file 
+
+Flags:
+
+    - Xmx7g -- 7 Gb of memory allocated
+    - input -- Input
+    - output -- Output
+    - fastq-type -- needed for base encoding
+    - min-qual 20 -- already set to 20 before, but since custome script, use 20 as safer assumption
+    - threads 2 -- Threads used
+
+*Script: [novo_sync.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/RunThrough_DataCleaning_Scripts/novo_sync.sh)*
+
+Ex.
+```
+java -ea -Xmx7g -jar ${popoolation_dir}/mpileup2sync.jar --input ${novo_mpileup}/${project_name}.mpileup --output ${novo_mpileup}/${project_name}.sync --fastq-type sanger --min-qual 20 --threads 2
+```
