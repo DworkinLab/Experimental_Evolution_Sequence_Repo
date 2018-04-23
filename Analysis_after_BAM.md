@@ -85,37 +85,22 @@ Ex.
 perl ${popoolation}/Variance-sliding.pl --input ${input}/${base}.pileup --output ${output}/${base}.pi --measure pi --window-size 10000 --step-size 10000 --min-count 2 --min-coverage 4 --max-coverage 400 --min-qual 20 --pool-size 120 --fastq-type sanger --snp-output ${output}/${base}.snps --min-covered-fraction 0.5
 ```
 
-$$$$$$$$$$$$
-
 ### Create plots of tajima Pi data
 
 On local machine, this R function can run each .pi file to output a plot
 
-**Script:** [Pi_PlotFunction.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/Pi_PlotFunction.R)
+***Script:** [Pi_plot_function.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Pi_plot_function.R)*
 
 ### In R, run the function for each .pi file
 
-ex. 
+Ex. 
 ```
 Pi_PlotFunction('FILE.pi', "Plot Title Details")
 ```
-
-### Example Output: Ancestral Pi for Novoalign
-
-![Ancestral Pi Plot for Novoalign](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/Ancestral_Pi.png)
-
-
-**Questions**
-
-Currently, Pi files for Novoalign and Bowtie2 generated.
-
-- Should these be averaged (with bwa-mem that can be generated easily enough)
-
-- is one mapper enough for this
-
-- Do we want to show trends in nucleotide diversity (other Pi plots) or just focus on ancestoral Pi (overlay plots)
-
 _______________________________________________________________________________________
+
+$$$$$$$$$$$$$$$$$$$$$$
+
 
 ## 2) Fst on windows of each pairwise comparision of sequences
 
