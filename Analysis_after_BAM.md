@@ -36,9 +36,7 @@ ________________________________________________________________________________
 
 - need to know the order of the .sync files: will be based on the order of the .bam files read into .sync 
 
-- Some scripts require the .sync file split into chromosomes: script below shows method of splitting Novoalign sync
-
-***Script:** [novo_split_sync_Chromosome.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_split_sync_Chromosome.sh)*
+- Some scripts require the .sync file split into chromosomes: Ex. ***Script:** [novo_split_sync_Chromosome.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_split_sync_Chromosome.sh)*
 _______________________________________________________________________________________
 
 ## 1) Tajima's Pi of non-overlapping windows for each sequence
@@ -91,6 +89,8 @@ On local machine, this R function can run each .pi file to output a plot
 
 ***Script:** [Pi_plot_function.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Pi_plot_function.R)*
 
+This script can be updated and modified for different details on the plots
+
 ### In R, run the function for each .pi file
 
 Ex. 
@@ -99,32 +99,32 @@ Pi_PlotFunction('FILE.pi', "Plot Title Details")
 ```
 _______________________________________________________________________________________
 
-$$$$$$$$$$$$$$$$$$$$$$
-
-
 ## 2) Fst on windows of each pairwise comparision of sequences
 
 ### Running Fst
 
-**Script:** [Novo_Fst.sh](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/Novo_Fst.sh)
+In 500 bp windows: calculates Fst values for each pairwise comparison between sequences (1-13) within the 500 bp window
+
+Flags:
+
+    - input -- input sync file
+    - output -- output file with Fst calculated 
+    - window-size [500] -- size of the window 
+    - step-size [500] -- distance to move along chromosome
+    - min-count [6] -- minimum allele count 
+    - min-coverage [10] -- minimum coverage
+    - max-coverage [250] --maximum coverage
+    - pool-size [120] -- double pooled size (diploid)
+    - min-covered-fraction [1] -- minimum percentage of sites having sufficient coverage in the given window
+
+**Script:** [novo_Fst.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_Fst.sh)
 
 ex.
 ```
 perl ${fst} --input ${novo_mpileup}/novo_episodic_main.sync --output ${novo_fst}/novo_episodic_main.fst --min-count 6 --min-coverage 10 --max-coverage 250 --min-covered-fraction 1 --window-size 500 --step-size 500 --pool-size 120
 ```
-Flags:
 
-- input -- input sync file
-- output -- output file with Fst calculated 
-- window-size [500] -- size of the window 
-- step-size [500] -- distance to move along chromosome
-- min-count [6] -- minimum allele count 
-- min-coverage [10] -- minimum coverage
-- max-coverage [250] --maximum coverage
-- pool-size [120] -- double pooled size (diploid)
-- min-covered-fraction [1] -- minimum percentage of sites having sufficient coverage in the given window
-
-
+$$$$$$$$$$
 ### In R, split the file into each compasison
 
 **Script:** [novo_Fst_Split_Comparisons.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/novo_Fst_Split_Comparisons.R)
