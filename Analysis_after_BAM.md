@@ -83,9 +83,15 @@ Ex.
 perl ${popoolation}/Variance-sliding.pl --input ${input}/${base}.pileup --output ${output}/${base}.pi --measure pi --window-size 10000 --step-size 10000 --min-count 2 --min-coverage 4 --max-coverage 400 --min-qual 20 --pool-size 120 --fastq-type sanger --snp-output ${output}/${base}.snps --min-covered-fraction 0.5
 ```
 
+Outputs of data were able to be loaded here:
+
+***Novoalign Pi data:** [Pi_Novoalign](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/Pi_Novoalign)*
+
+***Bowtie Pi data:** [Pi_Bowtie](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/Pi_Bowtie)*
+
 ### Create plots of tajima Pi data
 
-On local machine, this R function can run each .pi file to output a plot
+This R function can run each .pi file to output a plot
 
 ***Script:** [Pi_plot_function.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Pi_plot_function.R)*
 
