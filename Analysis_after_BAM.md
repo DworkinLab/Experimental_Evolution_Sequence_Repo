@@ -146,15 +146,13 @@ By changing the "patty" variable, the comparisons of interest can be combined an
 
 Some combined data files of interest can be found here: [Fst_combinedComparisons](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/Fst_combinedComparisons)
 
-# %$%$%$%$$%$%$%$%$%$%$%%$%$%$%$$%$%$%$%$%$%$%%$%$%$%$$%$%$%$%$%$%$%%$%$%$%$$%$%$%$%$%$%$%
-
 ### Plotting Fst files for Con:Sel comparison at three generations
 
  - average Fst of three mappers **and** average between replicates
  
  - comparison betweeen control and selection lines
  
- **Script:** []()
+ **Script:** [Fst_Plots.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Fst_Plots.R)
  
 Generation 38:
 [meanFst for F38](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/F38_meanFstPlot.png)
@@ -165,11 +163,8 @@ Generation 77:
 Generation 115: 
 ![meanFst for F115](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/F115_meanFstPlot.png)
 
-
-
-
 _______________________________________________________________________________________
-
+$$$$$$$$$$$$$
 ## 3) per SNP logistic regression for each treatment by generation
 
 **Long Script:*** [novo_regression_model_LONGSCRIPT.sh](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/novo_regression_model_LONGSCRIPT.sh)
