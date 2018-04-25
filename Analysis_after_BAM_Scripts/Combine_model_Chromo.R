@@ -1,4 +1,7 @@
 # Combine .coeffs.csv for two mappers
+#Rscript Combine_model_Chromo.R 'InputDIRECTORY' 'OutputDIRECTORY'
+# input dir == directory holding all directories
+
 require(dplyr)
 
 args <- commandArgs(trailingOnly = TRUE)
