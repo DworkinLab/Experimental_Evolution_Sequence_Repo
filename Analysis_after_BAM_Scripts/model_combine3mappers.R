@@ -1,5 +1,7 @@
 #To run as Rscript and have output directory argument:
-# need to change the files directories:
+# Need to change the files directories:
+# args == output dir if run with Rscript
+
 args <- commandArgs(trailingOnly = TRUE)
 
 # combine the coeffs csv files for three mappers
