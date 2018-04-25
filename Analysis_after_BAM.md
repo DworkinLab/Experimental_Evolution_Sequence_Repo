@@ -164,18 +164,20 @@ Generation 115:
 ![meanFst for F115](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/F115_meanFstPlot.png)
 
 _______________________________________________________________________________________
-$$$$$$$$$$$$$
+
 ## 3) per SNP logistic regression for each treatment by generation
 
-**Long Script:*** [novo_regression_model_LONGSCRIPT.sh](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/novo_regression_model_LONGSCRIPT.sh)
+**Long Script:*** [novo_regression_model_LONGSCRIPT.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_regression_model_LONGSCRIPT.sh)
 
-This script will break the chromosomal .sync files into smaller managable pieces and run through multiple R scripts while removing intermediates:
+This script will break the chromosomal .sync files (i.e split per chromosome) into smaller managable pieces and run through multiple R scripts while removing intermediates:
 
-**R script to covert sync to Count data:** [Sync_to_counts.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/Sync_to_counts.R)
+The R script below are within the long script:
+
+**R script to covert sync to Count data:** [Sync_to_counts.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Sync_to_counts.R)
 
 Creates a file with the counts for the major and minor frequency (based on ancestor) that can run through the model
 
-**R script for running the model for each position along the chromosome:** [Counts_to_model.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/Counts_to_model.R)
+**R script for running the model for each position along the chromosome:** [Counts_to_model.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Counts_to_model.R)
 
 In long script: this is set up to work in parallel, having each chromosome running at the same time (6 instances running over 11 sections)
 
@@ -188,19 +190,26 @@ modlist_2[[i]] <-
             data = tmp2, family = "binomial")
 ```
 
-**R script to combine all the split chromosome pieces back into one chromosome:** [Combine_chromo.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/Combine_chromo.R)
+
+**After** long script complete:
+
+**R script to combine all the split chromosome pieces back into one chromosome:** [Combine_model_Chromo.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Combine_model_Chromo.R)
+
 
 Recreates one chromosomal file
 
-**R script to combine three mappers into one file** [model_combine3mappers.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/model_combine3mappers.R)
+**R script to combine three mappers into one file** [model_combine3mappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_combine3mappers.R)
 
 Combines each of BWA-mem, Bowtie2 and Novoalign files into one file (keeping all information)
 
-**R script to write files with coeffefficent of interest** [model_3mappersTxG.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/model_3mappersTxG.R)
+
+**R script to write files with coeffefficent of interest** [model_3mappersTxG.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_3mappersTxG.R)
 
 This script (choosing Treatment by Generation effect) keeps positions that are present in all three files (i.e position needs to be mapped three times)
 
-**P.adjust?, Positions?,etc.**
+**P.adjust:** [model_p.adjustFDR.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_p.adjustFDR.R)
+
+Adjust the p-values found for multiple comparisons: adjusting with FDR
 
 **Plots**
 
