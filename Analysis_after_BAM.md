@@ -134,7 +134,11 @@ R script that will split the .fst file into many .csv files with each comparison
 
 **Script:** [FST_combine3mappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/FST_combine3mappers.R)
 
-Will take the split comparisons, and combine those specified into one FST file with the average Fst between the three mappers (change "patty" variable)
+Will take the split comparisons, and combine those specified into one FST file with the average Fst between the three mappers 
+
+By changing the "patty" variable, the comparisons of interest can be combined and evaluated by taking the matching comparisons from three directories holding the different mappers output from previous script spliting FST output.
+
+# %$%$%$%$$%$%$%$%$%$%$%%$%$%$%$$%$%$%$%$%$%$%%$%$%$%$$%$%$%$%$%$%$%%$%$%$%$$%$%$%$%$%$%$%
 
 ### Plotting Fst files for comparisons of interest
 
