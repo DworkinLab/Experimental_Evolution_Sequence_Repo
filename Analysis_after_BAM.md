@@ -124,18 +124,17 @@ ex.
 perl ${fst} --input ${novo_mpileup}/novo_episodic_main.sync --output ${novo_fst}/novo_episodic_main.fst --min-count 6 --min-coverage 10 --max-coverage 250 --min-covered-fraction 1 --window-size 500 --step-size 500 --pool-size 120
 ```
 
-$$$$$$$$$$
 ### In R, split the file into each compasison
 
-**Script:** [novo_Fst_Split_Comparisons.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/novo_Fst_Split_Comparisons.R)
+**Script:** [novo_Fst_Split_Comparisons.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_Fst_Split_Comparisons.R)
 
-R script that will split the .fst file into many .csv files with each comparison of interest (can choose the necessary ones from here)
+R script that will split the .fst file into many .csv files with each comparison (can choose the necessary ones from here)
 
-### Combining three mappers:
+### Combining three mappers output:
 
-**Script**[FST_combine3mappers.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/FST_combine3mappers.R)
+**Script:** [FST_combine3mappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/FST_combine3mappers.R)
 
-Will take the split comparisons, and combine those specified into one FST file with the average Fst between the three mappers
+Will take the split comparisons, and combine those specified into one FST file with the average Fst between the three mappers (change "patty" variable)
 
 ### Plotting Fst files for comparisons of interest
 
