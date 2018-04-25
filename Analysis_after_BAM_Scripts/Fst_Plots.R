@@ -5,7 +5,7 @@ require(data.table)
 require(tidyverse)
 
 ## Main directory holding fst directories for mappers:
-setwd("/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/FST")
+setwd("../Data/Fst_combinedComparisons/")
 
 # Control v. Treatment
 #layout of list: two files that will be combined (averaged) and the title of the plot
