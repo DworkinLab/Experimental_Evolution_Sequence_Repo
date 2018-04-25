@@ -144,13 +144,17 @@ Will take the split comparisons, and combine those specified into one FST file w
 
 By changing the "patty" variable, the comparisons of interest can be combined and evaluated by taking the matching comparisons from three directories holding the different mappers output from previous script spliting FST output.
 
+Some combined data files of interest can be found here: [Fst_combinedComparisons](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/Fst_combinedComparisons)
+
 # %$%$%$%$$%$%$%$%$%$%$%%$%$%$%$$%$%$%$%$%$%$%%$%$%$%$$%$%$%$%$%$%$%%$%$%$%$$%$%$%$%$%$%$%
 
-### Plotting Fst files for comparisons of interest
+### Plotting Fst files for Con:Sel comparison at three generations
 
  - average Fst of three mappers **and** average between replicates
  
  - comparison betweeen control and selection lines
+ 
+ **Script:** []()
  
 Generation 38:
 [meanFst for F38](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/F38_meanFstPlot.png)
