@@ -244,7 +244,7 @@ This function is taken from the poolseq scripts from [poolSeq](https://github.co
  
 **Rscript: To combine the mapppers:** [poolseq_combinemappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_combinemappers.R)
 
-This will combine mappers (only Novoalign and BWA mem) and keep the mean selection coefficient and the less significant p-value (i.e max P-value). (does write a second .csv used for positions in plotting)
+This will combine mappers (only Novoalign and BWA mem) and keep the mean selection coefficient (mean diff <0.001) and the less significant p-value (i.e max P-value). (does write a second .csv used for positions in plotting)
 
 
 Plot: control vs. selection lines selection coefficients. Red == control and other colours correspond to chromosomes of selection lines selection coefficients 
