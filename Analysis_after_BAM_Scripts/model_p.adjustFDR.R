@@ -80,9 +80,7 @@ CHROMOs_4 <-  CHROMOs_4[-which(CHROMOs_4$logAdjustP==Inf),]
 
 
 #Plot:
-CHROMOs_5 <- fread("CHROMO_FDR_Sig.csv")
-
-gdat <- ggplot(data = CHROMOs_5, aes(x=number, y=logAdjustP, colour = chr)) + 
+gdat <- ggplot(data = CHROMOs_4, aes(x=number, y=logAdjustP, colour = chr)) + 
 geom_point(size = 0.5, show.legend = F) + 
 theme(panel.background = element_blank()) + 
 xlab("Chromosome") + 
