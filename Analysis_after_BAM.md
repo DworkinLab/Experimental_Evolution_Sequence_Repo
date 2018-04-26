@@ -239,6 +239,10 @@ This function is taken from the poolseq scripts from [poolSeq](https://github.co
 **Rscript: combining CSV files:** [combinePoolseqCSV.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/combinePoolseqCSV.R)
 
 (I was impatiant and did this individually: ex. [combine_poolseq_individual_Chromo.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/combine_poolseq_individual_Chromo.R)
+ 
+**Rscript: To combine the mapppers:** [poolseq_combinemappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_combinemappers.R)
+
+This will combine mappers (only Novoalign and BWA mem) and keep the mean selection coefficient and the less significant p-value (i.e max P-value). (does write a second .csv used for positions in plotting)
 
 Notes: 
 
