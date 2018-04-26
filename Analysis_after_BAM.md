@@ -207,7 +207,9 @@ Combines each of BWA-mem, Bowtie2 and Novoalign files into one file (keeping all
 
 This script (choosing Treatment by Generation effect) keeps positions that are present in all three files (i.e position needs to be mapped three times)
 
-**P.adjust:** [model_p.adjustFDR.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_p.adjustFDR.R)
+**Rscript: Combine into one genome:** [combinemodelCHROMO.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/combinemodelCHROMO.R)
+
+**Rscript: P.adjust:** [model_p.adjustFDR.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_p.adjustFDR.R)
 
 Adjust the p-values found for multiple comparisons: adjusting with FDR 
 
