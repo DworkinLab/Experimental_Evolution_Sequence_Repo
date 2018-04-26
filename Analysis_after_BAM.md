@@ -244,6 +244,13 @@ This function is taken from the poolseq scripts from [poolSeq](https://github.co
 
 This will combine mappers (only Novoalign and BWA mem) and keep the mean selection coefficient and the less significant p-value (i.e max P-value). (does write a second .csv used for positions in plotting)
 
+
+Plot: control vs. selection lines selection coefficients. Red == control and other colours correspond to chromosomes of selection lines selection coefficients 
+
+![poolseqoverlaycontrols](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/overlay_CON:SEL_poolseq.png)
+
+
+
 Notes: 
 
 - should be edited to make more efficient to run (not taking <3 days per section)
