@@ -324,83 +324,36 @@ ________________________________________________________________________________
 **Positions with significant change after FDR adjustments:**
 ```
 ### Finding Positions of interest from Model:
-
+##-----------------------------------------------##
 ### Packages:
- require(dplyr)
- require(ggplot2)
- require(data.table)
+    require(dplyr)
+    require(ggplot2)
+    require(data.table)
 
 ### Read in each Chromosomal Data:  
- ddatX <- fread('../Data/X_Chromosome_TxG.csv', h=T)
- chr_X <- ddatX %>%
-   group_by(position, chr, Effects) %>%
-   summarise(mean_p = (mean(p.value)))
- rm(ddatX)
- a <- nrow(chr_X)
- chr_X$number <- 1:a
 
- ddat2L <- fread('../Data/2L_Chromosome_TxG.csv', h=T)
- chr_2L <- ddat2L %>%
-   group_by(position, chr, Effects) %>%
-   summarise(mean_p = (mean(p.value)))
- rm(ddat2L)
- b <- nrow(chr_2L)
- chr_2L$number <- (a+1):(a+b) 
+## MEAN P-VALUES
+# FDR
+    CHROMOs_3 <- fread("../Data/CHROMO_FDR_Sig.csv")
+# Bonferroni
+    #CHROMOs_3 <- fread("CHROMO_bonf_Sig.csv")
 
- ddat2R <- fread('../Data/2R_Chromosome_TxG.csv', h=T)
- chr_2R <- ddat2R %>%
-   group_by(position, chr, Effects) %>%
-   summarise(mean_p = (mean(p.value)))
- rm(ddat2R)
- c <- nrow(chr_2R)
- chr_2R$number <- (a+b+1):(a+b+c)
 
- ddat3L <- fread('../Data/3L_Chromosome_TxG.csv', h=T)
- chr_3L <- ddat3L %>%
-   group_by(position, chr, Effects) %>%
-   summarise(mean_p = (mean(p.value)))
- rm(ddat3L)
- d <- nrow(chr_3L)
- chr_3L$number <- (a+b+c+1):(a+b+c+d)
+# split based on chromosome and significant positions:
+    ddat2_X <- CHROMOs_3[which(CHROMOs_3$chr=='X' & CHROMOs_3$adjustP<0.05),]
+    ddat2_2L <- CHROMOs_3[which(CHROMOs_3$chr=='2L' & CHROMOs_3$adjustP<0.05),]
+    ddat2_2R <- CHROMOs_3[which(CHROMOs_3$chr=='2R' & CHROMOs_3$adjustP<0.05),]
+    ddat2_3L <- CHROMOs_3[which(CHROMOs_3$chr=='3L' & CHROMOs_3$adjustP<0.05),]
+    ddat2_3R <- CHROMOs_3[which(CHROMOs_3$chr=='3R' & CHROMOs_3$adjustP<0.05),]
+    ddat2_4 <- CHROMOs_3[which(CHROMOs_3$chr=='4' & CHROMOs_3$adjustP<0.05),]
 
- ddat3R <- fread('../Data/3R_Chromosome_TxG.csv', h=T)
- chr_3R <- ddat3R %>%
-   group_by(position, chr, Effects) %>%
-   summarise(mean_p = (mean(p.value)))
-  rm(ddat3R)
- e <- nrow(chr_3R)
- chr_3R$number <- (a+b+c+d+1):(a+b+c+d+e)
-
- ddat4 <- fread('../Data/4_Chromosome_TxG.csv', h=T)
- chr_4 <- ddat4 %>%
-   group_by(position, chr, Effects) %>%
-   summarise(mean_p = (mean(p.value)))
- rm(ddat4)
- f <- nrow(chr_4)
- chr_4$number <- (a+b+c+d+e+1):(a+b+c+d+e+f)
- chr_4$chr <- as.character(chr_4$chr)
-
-### One large data frame:
- CHROMOs <- rbind(chr_X, chr_2L, chr_2R, chr_3L, chr_3R, chr_4)
-
-### Fdr correction: adjust p values with false discrovey rate correction:
- CHROMOs$adjustP <- p.adjust(CHROMOs$mean_p, method = 'fdr')
-### Filter slightly to make it easier to wotk with:
- CHROMOs_3 <-  CHROMOs[which(CHROMOs$adjustP<0.9),]
-
-# Split into chromosomes and keep significant postions:
- ddat2_X <- CHROMOs_3[which(CHROMOs_3$chr=='X' & CHROMOs_3$adjustP<0.05),]
- pos_X <- ddat2_X$position
- ddat2_2L <- CHROMOs_3[which(CHROMOs_3$chr=='2L' & CHROMOs_3$adjustP<0.05),]
- pos_2L <- ddat2_2L$position
- ddat2_2R <- CHROMOs_3[which(CHROMOs_3$chr=='2R' & CHROMOs_3$adjustP<0.05),]
- pos_2R <- ddat2_2R$position
- ddat2_3L <- CHROMOs_3[which(CHROMOs_3$chr=='3L' & CHROMOs_3$adjustP<0.05),]
- pos_3L <- ddat2_3L$position
- ddat2_3R <- CHROMOs_3[which(CHROMOs_3$chr=='3R' & CHROMOs_3$adjustP<0.05),]
- pos_3R <- ddat2_3R$position
- ddat2_4 <- CHROMOs_3[which(CHROMOs_3$chr=='4' & CHROMOs_3$adjustP<0.05),]
- pos_4 <- ddat2_4$position
+# create position variable  
+    pos_X <- ddat2_X$position
+    pos_2L <- ddat2_2L$position
+    pos_2R <- ddat2_2R$position
+    pos_3L <- ddat2_3L$position
+    pos_3R <- ddat2_3R$position
+    pos_4 <- ddat2_4$position
 
 ### Remove all but positions:
  rm(list=ls()[! ls() %in% c('pos_X','pos_2L','pos_2R','pos_3L','pos_3R','pos_4')])
@@ -408,79 +361,48 @@ ________________________________________________________________________________
 
 **Positions showing significant selection coefficents in selection but not controls:**
 ```
-### Must be done for each chromosome seperatly: 
-###-----    2R     -----###
- novo_sel_2R <- fread('novo_episodic_2R_Sel.csv')
- novo_con_2R <- fread('novo_episodic_2R_Con.csv')
- bwa_sel_2R <- fread('bwa_episodic_2R_Sel.csv')
- bwa_con_2R <- fread('bwa_episodic_2R_Con.csv')
+# Combine pool-seq outputs:
+    require(tidyverse)
+    require(data.table)
 
- column.names <- c('selcoef', 'pval', 'pos', 'chr')
- colnames(novo_sel_2R) <- column.names
- colnames(novo_con_2R) <- column.names
- colnames(bwa_sel_2R) <- column.names
- colnames(bwa_con_2R) <- column.names
+# Read in data: combined mappers of SelCoef with mean selection coefficients
+    Zxc <- fread('SelCoef_Full_lessSig.csv')
+    
+# adjust p values
+    Zxc$adjustP <- p.adjust(Zxc$pval_max, method = 'fdr')
+    #Zxc$adjustP <- p.adjust(Zxc$pval_max, method = 'bonferroni')
 
- novo_sel_2R <- na.omit(novo_sel_2R)
- novo_con_2R <- na.omit(novo_con_2R)
- bwa_sel_2R <- na.omit(bwa_sel_2R)
- bwa_con_2R <- na.omit(bwa_con_2R)
+# Lable for significance 
+    Zxc$sig <- ifelse(Zxc$adjustP<0.05, "<0.05", ">0.05")
 
- novo_sel_2R$map <- 'Novo'
- novo_con_2R$map <- 'Novo'
- bwa_sel_2R$map <- 'bwa'
- bwa_con_2R$map <- 'bwa'
+# Only significant positions:
+    Zxc_sig <- Zxc[which(Zxc$sig=='<0.05'),]
 
- novo_sel_2R$Treatment <- 'Sel'
- novo_con_2R$Treatment <- 'Con'
- bwa_sel_2R$Treatment <- 'Sel'
- bwa_con_2R$Treatment <- 'Con'
+    Zxc_count <- Zxc_sig %>%
+     group_by(chr, pos) %>%
+     mutate(count = n())
 
- Xcx_2R <- rbind(novo_con_2R, novo_sel_2R, bwa_con_2R, bwa_sel_2R)
-###-----    2R     -----###
+    Zxc_count2 <- Zxc_count[which(Zxc_count$count==1),]
+    Zxc_count2 <- Zxc_count2[which(Zxc_count2$Treatment=='Sel'),]
 
-### Repeat this for all chromosomes (changing instances of 2R to chr) to create one large data frame:
- Xcx <- rbind(Xcx_2R, Xcx_2L)
+#positions: under selection (not removing any control seleted regions?
 
-### Make sure that all 2 (3) mappers have the position for chr/treatment:
- CXC <- Xcx %>%
-   group_by(chr, Treatment, pos) %>%
-   mutate(count = n())
- XCV <- CXC[which(CXC$count==2),]
+    poolseq_X <- Zxc_count2[which(Zxc_count2$chr=='X' & Zxc_count2$Treatment=='Sel'),]
+    poolseq_2L <- Zxc_count2[which(Zxc_count2$chr=='2L' & Zxc_count2$Treatment=='Sel'),]
+    poolseq_2R <- Zxc_count2[which(Zxc_count2$chr=='2R' & Zxc_count2$Treatment=='Sel'),]
+    poolseq_3L <- Zxc_count2[which(Zxc_count2$chr=='3L' & Zxc_count2$Treatment=='Sel'),]
+    poolseq_3R <- Zxc_count2[which(Zxc_count2$chr=='3R' & Zxc_count2$Treatment=='Sel'),]
+    poolseq_4 <- Zxc_count2[which(Zxc_count2$chr=='4' & Zxc_count2$Treatment=='Sel'),]
 
-### Get the mean selection coefficent and the least significant pvalue (max(pval)) between mappers:
- Zxc <- XCV %>%
-   group_by(chr, Treatment, pos) %>%
-   summarise(meanSelCoef = (mean(selcoef)),
-             pval_max=max(pval))
 
-### Adjust the p-value left with false discovery rate and keep significant postions:
- Zxc$adjustP <- p.adjust(Zxc$pval_max, method = 'fdr')
- Zxc$sig <- ifelse(Zxc$adjustP<0.05, "<0.05", ">0.05")
- Zxc_sig <- Zxc[which(Zxc$sig=='<0.05'),]
-
-### Check if there are positons that are significant and present for both control and selection (and keep only positions that are only significant for selection:
-
- Zxc_count <- Zxc_sig %>%
-   group_by(chr, pos) %>%
-   mutate(count = n())
- Zxc_count2 <- Zxc_count[which(Zxc_count$count==1),]
- Zxc_count2 <- Zxc_count2[which(Zxc_count2$Treatment=='Sel'),]
-
-### Positions by chromosome:
-
- poolseq_X <- Zxc_count2[which(Zxc_count2$chr=='X'),]
- pool_pos_X <- poolseq_X$pos
- poolseq_2L <- Zxc_count2[which(Zxc_count2$chr=='2L'),]
- pool_pos_2L <- poolseq_2L$pos
- poolseq_2R <- Zxc_count2[which(Zxc_count2$chr=='2R'),]
- pool_pos_2R <- poolseq_2R$pos
- poolseq_3L <- Zxc_count2[which(Zxc_count2$chr=='3L'),]
- pool_pos_3L <- poolseq_3L$pos
- poolseq_3R <- Zxc_count2[which(Zxc_count2$chr=='3R'),]
- pool_pos_3R <- poolseq_3R$pos
- poolseq_4 <- Zxc_count2[which(Zxc_count2$chr=='4'),]
- pool_pos_4 <- poolseq_4$pos
+# create and write a positional .csv file
+    pool_pos_X <- poolseq_X$pos
+    pool_pos_2L <- poolseq_2L$pos
+    pool_pos_2R <- poolseq_2R$pos
+    pool_pos_3L <- poolseq_3L$pos
+    pool_pos_3R <- poolseq_3R$pos
+    pool_pos_4 <- poolseq_4$pos
+    pool_pos_X <- poolseq_X$pos
  
  ### keep only positions:
   rm(list=ls()[! ls() %in% c('pool_pos_2L', 'pool_pos_2R', 'pool_pos_3L', 'pool_pos_3R', 'pool_pos_4', 'pool_pos_X')])
