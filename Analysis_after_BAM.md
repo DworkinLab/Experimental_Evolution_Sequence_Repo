@@ -224,23 +224,25 @@ ________________________________________________________________________________
 
 ## 4) estimates of selection coefficient at each position for selection and control lineages using [poolSeq](https://github.com/ThomasTaus/poolSeq) R package:
 
-**Script:** [poolseq_SelectionCoefficientEstimate.sh](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/poolseq_SelectionCoefficientEstimate.sh)
+**Script:** [poolseq_SelectionCoefficientEstimate.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_SelectionCoefficientEstimate.sh)
 
-This script will break the file into two treatment .sync files, break apart these .sync files (smaller sized files), and run through a R script to run poolSeq Package. 
+This script will break the sync files into two treatment .sync files, break apart these .sync files (smaller sized files), and run through a R script to run poolSeq Package (poolSeq_selectonCoeff.R)
 
-**Rscript: Running poolseq** [poolSeq_selectionCoeff.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/poolSeq_selectionCoeff.R)
+**Rscript: Running poolseq** [poolSeq_selectionCoeff.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolSeq_selectionCoeff.R)
 
 Note: to run, check poolseq is available, if not, source all PoolSeq scripts available from Taus git page. 
 
-Also, to run with modified Sync files (Change is spacing), need a personal read.sync function: --> modifed script == [read.sync_personal_function.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/read.sync_personal_function.R)
+Also, to run with modified Sync files which changes the spacing,  a personal read.sync function is needed: [read.sync_personal_function.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/read.sync_personal_function.R)
 
-**Rscript: combining CSV files:** [combinePoolseqCSV.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/combinePoolseqCSV.R)
+This function is taken from the poolseq scripts from [poolSeq](https://github.com/ThomasTaus/poolSeq) with slight modifications.
 
-Ex. For individual Chromosomes: [combine_poolseq_individual_Chromo.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/combine_poolseq_individual_Chromo.R)
+**Rscript: combining CSV files:** [combinePoolseqCSV.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/combinePoolseqCSV.R)
+
+(I was impatiant and did this individually: ex. [combine_poolseq_individual_Chromo.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/combine_poolseq_individual_Chromo.R)
 
 Notes: 
 
-- need to edit to make more efficient to run (not taking 3 days per section)
+- should be edited to make more efficient to run (not taking <3 days per section)
 
 - poolSeq may not work on certain versions of R; but can bring in Taus poolSeq scripts in manually and source (done in this script)
 
