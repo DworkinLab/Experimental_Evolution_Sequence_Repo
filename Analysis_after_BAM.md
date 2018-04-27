@@ -22,7 +22,10 @@ ________________________________________________________________________________
 ### 5) Positions of interest for Fst, poolseq and model output (overlap)
 /
 /
-### 6) Trajectory of regions of interest based on model, Fst and selection coefficients
+### 6) Running Gowinda for gene analysis from positions
+/
+/
+### 7) Trajectory of regions of interest based on model, Fst and selection coefficients
 /
 /
 
@@ -296,7 +299,12 @@ Finding positions overlapping with the significant model output (after adjustmen
  ```
 _______________________________________________________________________________________
 
-## 6) Trajectory of regions of interest based on model output
+## 6) Running Gowinda for gene analysis from positions
+
+
+
+_______________________________________________________________________________________
+## 7) Trajectory of regions of interest based on model output
 
 
 
