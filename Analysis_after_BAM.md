@@ -325,14 +325,17 @@ Just needs the chr and pos from a .sync file. Gowinda will just ingnore past col
 
 5) **Running Gowinda**
 
-From Gowinda source forge tutorial Example 1: Basic Example
+Note: already FDR adjust!
+
+For details: See Gowinda source forge tutorial Example 1: Basic Example
 ```
-java -Xmx4g -jar /home/paul/Gowinda/Gowinda-1.12.jar --snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync --candidate-snp-file /home/paul/Gowinda/candidatePos.csv --gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt --annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf --simulations 100000 --min-significance 1 --gene-definition gene --threads 8 --output-file results_gene_gene.txt --mode gene --min-genes 1
+java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar --snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync --candidate-snp-file /home/paul/Gowinda/candidatePos.csv --gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt --annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf --simulations 100000 --min-significance 1 --gene-definition gene --threads 8 --output-file results_gene_gene.txt --mode gene --min-genes 1
 ```
 
-From [Gowinda source forge tutorial](https://sourceforge.net/p/gowinda/wiki/Tutorial/) Example 3: high resolution GO term enrichment
+For details: See Gowinda source forge tutorial Example 3: high resolution GO term enrichment
+
 ```
-java -Xmx4g -jar /home/paul/Gowinda/Gowinda-1.12.jar \
+java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar \
 	--snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync \
 	--candidate-snp-file /home/paul/Gowinda/candidatePos.csv \
 	--gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt \
@@ -358,7 +361,8 @@ ________________________________________________________________________________
 
 Ex. with BWA -mem output sync files
 
-**Rscript:** [extract_sig_Chromo_positions.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/extract_sig_Chromo_positions.R)
+**Rscript:** [extract_sig_Chromo_positions.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/extract_sig_Chromo_positions.R)
+
 
 running rscript:
 ```
