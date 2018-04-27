@@ -10,16 +10,16 @@ ________________________________________________________________________________
 ### 1) Tajima's Pi of non-overlapping windows for each sequence
 /
 /
-### 2) Run Fst on windows for each pairwise comparision of sequenced data and calculate average Fst across three mappers
+### 2) Fst on windows for each pairwise comparision of sequenced data and calculate average Fst across three mappers
 /
 /
 ### 3) per SNP logistic regression for each treatment by generation averaged for Novoalign, Bwa-mem and bowtie2
 /
 /
-### 4) Average estimates of selection coefficient at each position for selection and control lineages for three mappers
+### 4) Average estimates of selection coefficient at each position for selection and control lineages for two mappers
 /
 /
-### 5) Positions of interest for Fst, poolseq and model output
+### 5) Positions of interest for Fst, poolseq and model output (overlap)
 /
 /
 ### 6) Trajectory of regions of interest based on model, Fst and selection coefficients
@@ -265,150 +265,42 @@ Notes:
 
 _______________________________________________________________________________________
 
-## 5) Comparison of Fst (of generation 115, control:Selection) and Model Outputs:
+## 5) Positions of interest for Fst, poolseq and model output (overlap)
 
-**First draft of plots** 
+Finding positions overlapping with the significant model output (after adjustments), the signifciant selection coefficients (only found in selection lines and not in controls) and that are found within a Fst window with a sufficiently high value.
 
-**Full Chromosome:**
-
- -- Numbers/ peaks do not line up perfectly (product of how they are plotted/ measured (windows vs. positions)
+**Selection Coeffients positions:** [positions_selCoef.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_selCoef.R)
  
-![FstV.model_full](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/log10p_fst_comboFUll.png)
-
+ **Fst Window Ranges:** [positions_FST.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_FST.R)
  
+ **Positions from model:** [positions_Model.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Model.R)
+ 
+ The above three scripts are sourced in the position extract script
+ 
+ **Extract positions:** [positions_Extract.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Extract.R)
+ 
+ The positions that are found in both the model output and with a significant selection coefficient are first found, then checked if they are present within the 500 bp window from FST.
+ 
+ Ends with a number of positons for each chromosome: have this for keeping the mean p-value from selcoef and model as well as less signifciant (max) p-value.
+ 
+
+ ```
+ Number of positions
+  Chr - Max - Mean
+   2L - 71 - 80
+   2R - 51 - 52
+   3L - 19 - 19
+   3R - 23 - 24
+   4  - 0  - 0
+   X  - 73 - 86
+ ```
 _______________________________________________________________________________________
 
 ## 6) Trajectory of regions of interest based on model output
 
-### Finding positions: 
-
-**Fst window and ranges in data frame:**
-```
-### Adjust the FST output (FDR) and keep positons that have an Fst value after adjusting
- require(data.table)
- require(tidyverse)
-### Read in the data (final generation) with comparison between Control and Selection lines:
- XC2 <- fread('combined_fst_1:3.csv')
- CX2 <- fread('combined_fst_2:4.csv')
-### One data frame:
- ddat <- rbind(CX2, XC2)
-### Mean Fst b/w two replicates:
- ddat2 <- ddat %>%
-   group_by(chr, window) %>%
-   summarise(meanFst = (mean(meanFst)))
-### Fdr correction: Adjust the calculated Fst values with a false discovery rate:
- ddat2$adjustFst <- p.adjust(ddat2$meanFst, method = 'fdr')
-### Remove positions with an Fst of 0
- ddat2 <-  ddat2[-which(ddat2$adjustFst==0),]
-### The range of the 500 bp window (window == center)
- ddat2$minWindow <- ddat2$window -250
- ddat2$maxWindow <- ddat2$window +250
-
-### need to sort positions based on chromosome (for trajectories):
- fst_X <- ddat2[which(ddat2$chr=='X'),]
- fst_2L <- ddat2[which(ddat2$chr=='2L'),]
- fst_2R <- ddat2[which(ddat2$chr=='2R'),]
- fst_3L <- ddat2[which(ddat2$chr=='3L'),]
- fst_3R <- ddat2[which(ddat2$chr=='3R'),]
- fst_4 <- ddat2[which(ddat2$chr=='4'),]
-
-### create positional data frame (to be sources later:
- posfst_X <- as.data.frame(cbind(fst_X$window, fst_X$minWindow, fst_X$maxWindow))
- posfst_2L <- as.data.frame(cbind(fst_2L$window, fst_2L$minWindow, fst_2L$maxWindow))
- posfst_2R <- as.data.frame(cbind(fst_2R$window, fst_2R$minWindow, fst_2R$maxWindow))
- posfst_3L <- as.data.frame(cbind(fst_3L$window, fst_3L$minWindow, fst_3L$maxWindow))
- posfst_3R <- as.data.frame(cbind(fst_3R$window, fst_3R$minWindow, fst_3R$maxWindow))
- posfst_4 <- as.data.frame(cbind(fst_4$window, fst_4$minWindow, fst_4$maxWindow))
-
-### Keep only position data frame for sourcing:
- rm(list=ls()[! ls() %in% c('posfst_X', "posfst_2L", 'posfst_2R', 'posfst_3R', 'posfst_3L','posfst_4')])
-```
-**Positions with significant change after FDR adjustments:**
-```
-### Finding Positions of interest from Model:
-##-----------------------------------------------##
-### Packages:
-    require(dplyr)
-    require(ggplot2)
-    require(data.table)
-
-### Read in each Chromosomal Data:  
-
-## MEAN P-VALUES
-# FDR
-    CHROMOs_3 <- fread("../Data/CHROMO_FDR_Sig.csv")
-# Bonferroni
-    #CHROMOs_3 <- fread("CHROMO_bonf_Sig.csv")
 
 
-# split based on chromosome and significant positions:
-    ddat2_X <- CHROMOs_3[which(CHROMOs_3$chr=='X' & CHROMOs_3$adjustP<0.05),]
-    ddat2_2L <- CHROMOs_3[which(CHROMOs_3$chr=='2L' & CHROMOs_3$adjustP<0.05),]
-    ddat2_2R <- CHROMOs_3[which(CHROMOs_3$chr=='2R' & CHROMOs_3$adjustP<0.05),]
-    ddat2_3L <- CHROMOs_3[which(CHROMOs_3$chr=='3L' & CHROMOs_3$adjustP<0.05),]
-    ddat2_3R <- CHROMOs_3[which(CHROMOs_3$chr=='3R' & CHROMOs_3$adjustP<0.05),]
-    ddat2_4 <- CHROMOs_3[which(CHROMOs_3$chr=='4' & CHROMOs_3$adjustP<0.05),]
 
-# create position variable  
-    pos_X <- ddat2_X$position
-    pos_2L <- ddat2_2L$position
-    pos_2R <- ddat2_2R$position
-    pos_3L <- ddat2_3L$position
-    pos_3R <- ddat2_3R$position
-    pos_4 <- ddat2_4$position
-
-### Remove all but positions:
- rm(list=ls()[! ls() %in% c('pos_X','pos_2L','pos_2R','pos_3L','pos_3R','pos_4')])
-```
-
-**Positions showing significant selection coefficents in selection but not controls:**
-```
-# Combine pool-seq outputs:
-    require(tidyverse)
-    require(data.table)
-
-# Read in data: combined mappers of SelCoef with mean selection coefficients
-    Zxc <- fread('SelCoef_Full_lessSig.csv')
-    
-# adjust p values
-    Zxc$adjustP <- p.adjust(Zxc$pval_max, method = 'fdr')
-    #Zxc$adjustP <- p.adjust(Zxc$pval_max, method = 'bonferroni')
-
-# Lable for significance 
-    Zxc$sig <- ifelse(Zxc$adjustP<0.05, "<0.05", ">0.05")
-
-# Only significant positions:
-    Zxc_sig <- Zxc[which(Zxc$sig=='<0.05'),]
-
-    Zxc_count <- Zxc_sig %>%
-     group_by(chr, pos) %>%
-     mutate(count = n())
-
-    Zxc_count2 <- Zxc_count[which(Zxc_count$count==1),]
-    Zxc_count2 <- Zxc_count2[which(Zxc_count2$Treatment=='Sel'),]
-
-#positions: under selection (not removing any control seleted regions?
-
-    poolseq_X <- Zxc_count2[which(Zxc_count2$chr=='X' & Zxc_count2$Treatment=='Sel'),]
-    poolseq_2L <- Zxc_count2[which(Zxc_count2$chr=='2L' & Zxc_count2$Treatment=='Sel'),]
-    poolseq_2R <- Zxc_count2[which(Zxc_count2$chr=='2R' & Zxc_count2$Treatment=='Sel'),]
-    poolseq_3L <- Zxc_count2[which(Zxc_count2$chr=='3L' & Zxc_count2$Treatment=='Sel'),]
-    poolseq_3R <- Zxc_count2[which(Zxc_count2$chr=='3R' & Zxc_count2$Treatment=='Sel'),]
-    poolseq_4 <- Zxc_count2[which(Zxc_count2$chr=='4' & Zxc_count2$Treatment=='Sel'),]
-
-
-# create and write a positional .csv file
-    pool_pos_X <- poolseq_X$pos
-    pool_pos_2L <- poolseq_2L$pos
-    pool_pos_2R <- poolseq_2R$pos
-    pool_pos_3L <- poolseq_3L$pos
-    pool_pos_3R <- poolseq_3R$pos
-    pool_pos_4 <- poolseq_4$pos
-    pool_pos_X <- poolseq_X$pos
- 
- ### keep only positions:
-  rm(list=ls()[! ls() %in% c('pool_pos_2L', 'pool_pos_2R', 'pool_pos_3L', 'pool_pos_3R', 'pool_pos_4', 'pool_pos_X')])
-```
 
 
 
