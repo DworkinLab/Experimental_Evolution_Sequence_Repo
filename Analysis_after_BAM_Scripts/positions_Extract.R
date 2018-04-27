@@ -42,7 +42,7 @@ for (chr in CHR){
 
 rm(list=ls()[! ls() %in% c('posfst_X', "posfst_2L", 'posfst_2R', 'posfst_3R', 'posfst_3L','posfst_4','pos_X','pos_2L','pos_2R','pos_3L','pos_3R','pos_4', 'pool_pos_2L', 'pool_pos_2R', 'pool_pos_3L','pool_pos_3R','pool_pos_4','pool_pos_X', 'int_2L','int_2R', 'int_3L','int_3R','int_4', 'int_X')]) 
 
-#Depending on p-val method: changed
+#Depending on p-val method: can change name of output:
 #write.csv(int_X, file='X_positions_maxP.csv', row.names = FALSE)
 #write.csv(int_2L, file='2L_positions_maxP.csv', row.names = FALSE)
 #write.csv(int_2R, file='2R_positions_maxP.csv', row.names = FALSE)
@@ -50,9 +50,23 @@ rm(list=ls()[! ls() %in% c('posfst_X', "posfst_2L", 'posfst_2R', 'posfst_3R', 'p
 #write.csv(int_3R, file='3R_positions_maxP.csv', row.names = FALSE)
 #write.csv(int_4, file='4_positions_maxP.csv', row.names = FALSE)
 
-#write.csv(int_X, file='X_positions_meanP.csv', row.names = FALSE)
-#write.csv(int_2L, file='2L_positions_meanP.csv', row.names = FALSE)
-#write.csv(int_2R, file='2R_positions_meanP.csv', row.names = FALSE)
-#write.csv(int_3L, file='3L_positions_meanP.csv', row.names = FALSE)
-#write.csv(int_3R, file='3R_positions_meanP.csv', row.names = FALSE)
-#write.csv(int_4, file='4_positions_meanP.csv', row.names = FALSE)
+int_2L$chr <- '2L'
+int_2R$chr <- '2R'
+int_3L$chr <- '3L'
+int_3R$chr <- '3R'
+#Empty: int_4$chr <- '4'
+int_X$chr <- 'X'
+
+Ppos <- rbind(int_2L, int_2R, int_3L, int_3R, int_X)
+Ppos$pos <- Ppos$int
+Ppos_3 <- subset( Ppos, select = -int )
+write.csv(Ppos_2, file = "candidatePositions.csv", row.names = F)
+
+#Between max p and mean p
+#  CHR-Max-Mean
+#   2L-71-80
+#   2R-51-52
+#   3L-19-19
+#   3R-23-24
+#   4-0-0
+#   X-73-86
