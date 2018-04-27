@@ -301,6 +301,50 @@ ________________________________________________________________________________
 
 ## 6) Running Gowinda for gene analysis from positions
 
+### To Run Gowinda: [Gowinda source forge tutorial](https://sourceforge.net/p/gowinda/wiki/Tutorial/)
+
+1) **GTF file**
+Need a Gtf file: converted from a gff file from [FlyBase homepage](http://flybase.org/) *dmel-all-r5.57.gff.gz* (matching current index)
+
+Converted gff to gtf with Gowinda script Gff2Gtf.py:
+
+Ex.
+```
+python /home/paul/Gowinda/Gff2Gtf.py --input /home/paul/episodicData/index_dir/dmel-all-r5.57.gff > /home/paul/Gowinda/dmel-all-r5.57.gtf
+```
+
+2) **Gene Association File**
+
+Gene associations with [FuncAssociate](http://llama.mshri.on.ca/funcassociate/download_go_associations)
+
+3) **Candidate Positions** found [here](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Extract.R))
+
+4) **Full genome and positions**
+
+Just needs the chr and pos from a .sync file. Gowinda will just ingnore past column 2: using one of the full .sync files
+
+5) **Running Gowinda**
+
+From Gowinda source forge tutorial Example 1: Basic Example
+```
+java -Xmx4g -jar /home/paul/Gowinda/Gowinda-1.12.jar --snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync --candidate-snp-file /home/paul/Gowinda/candidatePos.csv --gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt --annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf --simulations 100000 --min-significance 1 --gene-definition gene --threads 8 --output-file results_gene_gene.txt --mode gene --min-genes 1
+```
+
+From [Gowinda source forge tutorial](https://sourceforge.net/p/gowinda/wiki/Tutorial/) Example 3: high resolution GO term enrichment
+```
+java -Xmx4g -jar /home/paul/Gowinda/Gowinda-1.12.jar \
+	--snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync \
+	--candidate-snp-file /home/paul/Gowinda/candidatePos.csv \
+	--gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt \
+	--annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf \
+	--simulations 100000 \
+	--min-significance 1 \
+	--gene-definition updownstream2000 \
+	--threads 8 \
+	--output-file /home/paul/Gowinda/results_snp_2000ud.txt \
+	--mode snp \
+	--min-genes 1
+```
 
 
 _______________________________________________________________________________________
