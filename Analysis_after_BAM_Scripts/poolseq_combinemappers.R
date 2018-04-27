@@ -1,4 +1,4 @@
-# Combine mappers and keep mean selection coefficient and less significant p-values (max P)
+# Combine mappers and keep mean selection coefficient and 2 pvalues: less significant p-values (max P) and mean p value
 
 # Combine pool-seq outputs:
 setwd('/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/poolSeq')
@@ -27,7 +27,7 @@ Sel_X <- Sel_X[which(Sel_X$count==2),]
 Sel_X <- Sel_X %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 # Controls:
 bwa_con_X <- fread('bwa_episodic_X_Con.csv')
@@ -47,7 +47,7 @@ Con_X <- Con_X[which(Con_X$count==2),]
 Con_X <- Con_X %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 
 datX <- merge(Con_X, Sel_X, by = 'pos', all =T)
@@ -60,9 +60,9 @@ datX$number <- 1:aa
 #dat3R$number <-  (aa+bb+cc+dd+1):(aa+bb+cc+dd+ee)
 #dat4$number <- (aa+bb+cc+dd+ee+1):(aa+bb+cc+dd+ee+ff)
 
-Con_X <- datX[c(1,2,3,4,5,10)]
-Sel_X <- datX[c(1,6,7,8,9,10)]
-column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max', 'number')
+Con_X <- datX[c(1,2,3,4,5,6,12)]
+Sel_X <- datX[c(1,7,8,9,10,11,12)]
+column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max','pval_mean', 'number')
 colnames(Sel_X) <- column.names_2
 colnames(Con_X) <- column.names_2
 
@@ -92,7 +92,7 @@ Sel_2L <- Sel_2L[which(Sel_2L$count==2),]
 Sel_2L <- Sel_2L %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 # Controls:
 bwa_con_2L <- fread('bwa_episodic_2L_Con.csv')
@@ -111,7 +111,7 @@ Con_2L <- Con_2L[which(Con_2L$count==2),]
 Con_2L <- Con_2L %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 dat2L <- merge(Con_2L, Sel_2L, by = 'pos', all =T)
 
@@ -122,9 +122,9 @@ dat2L$number <- (1+aa):(aa+bb)
 #dat3L$number <- (1+aa+bb+cc):(aa+bb+cc+dd)
 #dat3R$number <-  (aa+bb+cc+dd+1):(aa+bb+cc+dd+ee)
 #dat4$number <- (aa+bb+cc+dd+ee+1):(aa+bb+cc+dd+ee+ff)
-Con_2L <- dat2L[c(1,2,3,4,5,10)]
-Sel_2L <- dat2L[c(1,6,7,8,9,10)]
-column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max', 'number')
+Con_2L <- dat2L[c(1,2,3,4,5,6,12)]
+Sel_2L <- dat2L[c(1,7,8,9,10,11,12)]
+column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max','pval_mean', 'number')
 colnames(Sel_2L) <- column.names_2
 colnames(Con_2L) <- column.names_2
 
@@ -153,7 +153,7 @@ Sel_2R <- Sel_2R[which(Sel_2R$count==2),]
 Sel_2R <- Sel_2R %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 # Controls:
 bwa_con_2R <- fread('bwa_episodic_2R_Con.csv')
@@ -172,7 +172,7 @@ Con_2R <- Con_2R[which(Con_2R$count==2),]
 Con_2R <- Con_2R %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 dat2R <- merge(Con_2R, Sel_2R, by = 'pos', all =T)
 cc <- length(dat2R$pos)
@@ -182,9 +182,9 @@ dat2R$number <- (1+aa+bb):(aa+bb+cc)
 #dat3L$number <- (1+aa+bb+cc):(aa+bb+cc+dd)
 #dat3R$number <-  (aa+bb+cc+dd+1):(aa+bb+cc+dd+ee)
 #dat4$number <- (aa+bb+cc+dd+ee+1):(aa+bb+cc+dd+ee+ff)
-Con_2R <- dat2R[c(1,2,3,4,5,10)]
-Sel_2R <- dat2R[c(1,6,7,8,9,10)]
-column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max', 'number')
+Con_2R <- dat2R[c(1,2,3,4,5,6,12)]
+Sel_2R <- dat2R[c(1,7,8,9,10,11,12)]
+column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max','pval_mean', 'number')
 colnames(Sel_2R) <- column.names_2
 colnames(Con_2R) <- column.names_2
 
@@ -213,7 +213,7 @@ Sel_3L <- Sel_3L[which(Sel_3L$count==2),]
 Sel_3L <- Sel_3L %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 # Controls:
 bwa_con_3L <- fread('bwa_episodic_3L_Con.csv')
@@ -232,7 +232,7 @@ Con_3L <- Con_3L[which(Con_3L$count==2),]
 Con_3L <- Con_3L %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 dat3L <- merge(Con_3L, Sel_3L, by = 'pos', all =T)
 dd <- length(dat3L$pos)
@@ -242,9 +242,9 @@ dd <- length(dat3L$pos)
 dat3L$number <- (1+aa+bb+cc):(aa+bb+cc+dd)
 #dat3R$number <-  (aa+bb+cc+dd+1):(aa+bb+cc+dd+ee)
 #dat4$number <- (aa+bb+cc+dd+ee+1):(aa+bb+cc+dd+ee+ff)
-Con_3L <- dat3L[c(1,2,3,4,5,10)]
-Sel_3L <- dat3L[c(1,6,7,8,9,10)]
-column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max', 'number')
+Con_3L <- dat3L[c(1,2,3,4,5,6,12)]
+Sel_3L <- dat3L[c(1,7,8,9,10,11,12)]
+column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max','pval_mean', 'number')
 colnames(Sel_3L) <- column.names_2
 colnames(Con_3L) <- column.names_2
 
@@ -274,7 +274,7 @@ Sel_3R <- Sel_3R[which(Sel_3R$count==2),]
 Sel_3R <- Sel_3R %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 # Controls:
 bwa_con_3R <- fread('bwa_episodic_3R_Con.csv')
@@ -293,7 +293,7 @@ Con_3R <- Con_3R[which(Con_3R$count==2),]
 Con_3R <- Con_3R %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 dat3R <- merge(Con_3R, Sel_3R, by = 'pos', all =T)
 ee <- length(dat3R$pos)
@@ -303,9 +303,9 @@ ee <- length(dat3R$pos)
 #dat3L$number <- (1+aa+bb+cc):(aa+bb+cc+dd)
 dat3R$number <-  (aa+bb+cc+dd+1):(aa+bb+cc+dd+ee)
 #dat4$number <- (aa+bb+cc+dd+ee+1):(aa+bb+cc+dd+ee+ff)
-Con_3R <- dat3R[c(1,2,3,4,5,10)]
-Sel_3R <- dat3R[c(1,6,7,8,9,10)]
-column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max', 'number')
+Con_3R <- dat3R[c(1,2,3,4,5,6,12)]
+Sel_3R <- dat3R[c(1,7,8,9,10,11,12)]
+column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max','pval_mean', 'number')
 colnames(Sel_3R) <- column.names_2
 colnames(Con_3R) <- column.names_2
 
@@ -336,7 +336,7 @@ Sel_4 <- Sel_4[which(Sel_4$count==2),]
 Sel_4 <- Sel_4 %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 # Controls:
 bwa_con_4 <- fread('bwa_episodic_4_Con.csv')
@@ -356,7 +356,7 @@ Con_4 <- Con_4[which(Con_4$count==2),]
 Con_4 <- Con_4 %>%
   group_by(chr, Treatment, pos) %>%
   summarise(meanSelCoef = (mean(selcoef)),
-            pval_max=max(pval))
+            pval_max=max(pval), pval_mean=mean(pval))
 
 dat4 <- merge(Con_4, Sel_4, by = 'pos', all =T)
 ff <- length(dat4$pos)
@@ -366,9 +366,9 @@ ff <- length(dat4$pos)
 #dat3L$number <- (1+aa+bb+cc):(aa+bb+cc+dd)
 #dat3R$number <-  (aa+bb+cc+dd+1):(aa+bb+cc+dd+ee)
 dat4$number <- (aa+bb+cc+dd+ee+1):(aa+bb+cc+dd+ee+ff)
-Con_4 <- dat4[c(1,2,3,4,5,10)]
-Sel_4 <- dat4[c(1,6,7,8,9,10)]
-column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max', 'number')
+Con_4 <- dat4[c(1,2,3,4,5,6,12)]
+Sel_4 <- dat4[c(1,7,8,9,10,11,12)]
+column.names_2 <- c('pos','chr', 'Treatment', 'meanSelCoef', 'pval_max','pval_mean', 'number')
 colnames(Sel_4) <- column.names_2
 colnames(Con_4) <- column.names_2
 
@@ -382,5 +382,7 @@ rm(novo_con_4, novo_sel_4, bwa_con_4, bwa_sel_4)
 
 Zxc <- rbind(Xcx_2L, Xcx_2R, Xcx_3L, Xcx_3R, Xcx_4, Xcx_X)
 Zxc_lengths <- c(aa,bb,cc,dd,ee,ff)
-write.csv(Zxc_lengths, file="SelCoef_Full_lessSig_LENGTHS.csv", row.names=FALSE)
-write.csv(Zxc, file="SelCoef_Full_lessSig.csv", row.names=FALSE)
+#File with lengths for plots:
+write.csv(Zxc_lengths, file="SelCoef_Full_LENGTHS.csv", row.names=FALSE)
+#Full File:
+write.csv(Zxc, file="SelCoef_Full.csv", row.names=FALSE)
