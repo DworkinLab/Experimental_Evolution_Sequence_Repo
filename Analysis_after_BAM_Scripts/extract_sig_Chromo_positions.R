@@ -32,9 +32,9 @@ write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_X_positions.sync")
 	#write.csv(episodic_counts_bowtie, file="/home/paul/episodicData/Positions/bowtie_X_positions.sync")
 
 ## remove:
-rm(episodic_data)
+rm(episodic_data_bwa)
 rm(siglist)
-rm(episodic_counts)
+rm(episodic_counts_bwa)
 
 ### 2R Chromosome:
 siglist <- fread('/home/paul/Positions/2R_positions_maxP.csv', h=T)
@@ -43,9 +43,9 @@ episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_2R
 colnames(episodic_data_bwa) <- name.Columns
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
 write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_2R_positions.sync")
-rm(episodic_data)
+rm(episodic_data_bwa)
 rm(siglist)
-rm(episodic_counts)
+rm(episodic_counts_bwa)
 
 ### 2L Chromosome:
 siglist <- fread('/home/paul/Positions/2L_positions_maxP.csv', h=T)
@@ -54,9 +54,9 @@ episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_2L
 colnames(episodic_data_bwa) <- name.Columns
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
 write.csv(episodic_counts_bwa, file="//home/paul/Positions/bwa_2L_positions.sync")
-rm(episodic_data)
+rm(episodic_data_bwa)
 rm(siglist)
-rm(episodic_counts)
+rm(episodic_counts_bwa)
 
 ### 3R Chromosome:
 siglist <- fread('/home/paul/Positions/3R_positions_maxP.csv', h=T)
@@ -65,9 +65,9 @@ episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_3R
 colnames(episodic_data_bwa) <- name.Columns
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
 write.csv(episodic_counts_bwa, file="//home/paul/Positions/bwa_3R_positions.sync")
-rm(episodic_data)
+rm(episodic_data_bwa)
 rm(siglist)
-rm(episodic_counts)
+rm(episodic_counts_bwa)
 
 ### 3L Chromosome:
 siglist <- fread('/home/paul/Positions/3L_positions_maxP.csv', h=T)
@@ -76,8 +76,8 @@ episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_3L
 colnames(episodic_data_bwa) <- name.Columns
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
 write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_3L_positions.sync")
-rm(episodic_data)
+rm(episodic_data_bwa)
 rm(siglist)
-rm(episodic_counts)
+rm(episodic_counts_bwa)
 
 ### 4 Chromosome: Empty!!!
