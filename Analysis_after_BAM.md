@@ -319,6 +319,10 @@ Gene associations with [FuncAssociate](http://llama.mshri.on.ca/funcassociate/do
 
 3) **Candidate Positions** found [here](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Extract.R))
 
+Need to write .txt like this:
+```
+write.table(FILE, file='candidatePos.txt', sep ="\t", col.names = F, row.names = F)
+```
 4) **Full genome and positions**
 
 Just needs the chr and pos from a .sync file. Gowinda will just ingnore past column 2: using one of the full .sync files
