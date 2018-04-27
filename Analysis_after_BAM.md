@@ -329,7 +329,7 @@ Note: already FDR adjust!
 
 For details: See Gowinda source forge tutorial Example 1: Basic Example
 ```
-java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar --snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync --candidate-snp-file /home/paul/Gowinda/candidatePos.csv --gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt --annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf --simulations 100000 --min-significance 1 --gene-definition gene --threads 8 --output-file results_gene_gene.txt --mode gene --min-genes 1
+java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar --snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync --candidate-snp-file /home/paul/Gowinda/candidatePos.txt --gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt --annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf --simulations 100000 --min-significance 1 --gene-definition gene --threads 8 --output-file results_gene_gene.txt --mode gene --min-genes 1
 ```
 
 For details: See Gowinda source forge tutorial Example 3: high resolution GO term enrichment
@@ -337,7 +337,7 @@ For details: See Gowinda source forge tutorial Example 3: high resolution GO ter
 ```
 java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar \
 	--snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync \
-	--candidate-snp-file /home/paul/Gowinda/candidatePos.csv \
+	--candidate-snp-file /home/paul/Gowinda/candidatePos.txt \
 	--gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt \
 	--annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf \
 	--simulations 100000 \
