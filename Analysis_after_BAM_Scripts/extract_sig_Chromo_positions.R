@@ -10,7 +10,7 @@ name.Columns <- c("Chromosome", "Position", "ref",
                   "SelR1_0")
 
 ### X Chromosome:
-siglist <- fread('/home/paul/episodicData/Positions/X_positions_maxP.csv', h=T)
+siglist <- fread('/home/paul/Positions/X_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
 ## Read in data:
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_X.sync')
@@ -27,7 +27,7 @@ episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist
 	#episodic_counts_bowtie <- episodic_data_bowtie[episodic_data_bowtie$Position %in% siglist_2 ,]
 
 ## write csv file with only positions
-write.csv(episodic_counts_bwa, file="/home/paul/episodicData/Positions/bwa_X_positions.sync")
+write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_X_positions.sync")
 	#write.csv(episodic_counts_novo, file="/home/paul/episodicData/Positions/novo_X_positions.sync")
 	#write.csv(episodic_counts_bowtie, file="/home/paul/episodicData/Positions/bowtie_X_positions.sync")
 
@@ -37,45 +37,45 @@ rm(siglist)
 rm(episodic_counts)
 
 ### 2R Chromosome:
-siglist <- fread('/home/paul/episodicData/Positions/2R_positions_maxP.csv', h=T)
+siglist <- fread('/home/paul/Positions/2R_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_2R.sync')
 colnames(episodic_data_bwa) <- name.Columns
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
-write.csv(episodic_counts_bwa, file="/home/paul/episodicData/Positions/bwa_2R_positions.sync")
+write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_2R_positions.sync")
 rm(episodic_data)
 rm(siglist)
 rm(episodic_counts)
 
 ### 2L Chromosome:
-siglist <- fread('/home/paul/episodicData/Positions/2L_positions_maxP.csv', h=T)
+siglist <- fread('/home/paul/Positions/2L_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_2L.sync')
 colnames(episodic_data_bwa) <- name.Columns
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
-write.csv(episodic_counts_bwa, file="/home/paul/episodicData/Positions/bwa_2L_positions.sync")
+write.csv(episodic_counts_bwa, file="//home/paul/Positions/bwa_2L_positions.sync")
 rm(episodic_data)
 rm(siglist)
 rm(episodic_counts)
 
 ### 3R Chromosome:
-siglist <- fread('/home/paul/episodicData/Positions/3R_positions_maxP.csv', h=T)
+siglist <- fread('/home/paul/Positions/3R_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_3R.sync')
 colnames(episodic_data_bwa) <- name.Columns
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
-write.csv(episodic_counts_bwa, file="/home/paul/episodicData/Positions/bwa_3R_positions.sync")
+write.csv(episodic_counts_bwa, file="//home/paul/Positions/bwa_3R_positions.sync")
 rm(episodic_data)
 rm(siglist)
 rm(episodic_counts)
 
 ### 3L Chromosome:
-siglist <- fread('/home/paul/episodicData/Positions/3L_positions_maxP.csv', h=T)
+siglist <- fread('/home/paul/Positions/3L_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_3L.sync')
 colnames(episodic_data_bwa) <- name.Columns
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
-write.csv(episodic_counts_bwa, file="/home/paul/episodicData/Positions/bwa_3L_positions.sync")
+write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_3L_positions.sync")
 rm(episodic_data)
 rm(siglist)
 rm(episodic_counts)
