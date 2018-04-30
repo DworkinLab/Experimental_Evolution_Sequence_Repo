@@ -136,7 +136,7 @@ Flags:
     - pool-size [120] -- double pooled size (diploid)
     - min-covered-fraction [1] -- minimum percentage of sites having sufficient coverage in the given window
 
-**Script:** [novo_Fst.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_Fst.sh)
+***Script:** [novo_Fst.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_Fst.sh)*
 
 ex.
 ```
@@ -145,13 +145,13 @@ perl ${fst} --input ${novo_mpileup}/novo_episodic_main.sync --output ${novo_fst}
 
 ### In R, split the file into each compasison
 
-**Script:** [novo_Fst_Split_Comparisons.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_Fst_Split_Comparisons.R)
+***Script:** [novo_Fst_Split_Comparisons.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_Fst_Split_Comparisons.R)*
 
 R script that will split the .fst file into many .csv files with each comparison (can choose the necessary ones from here)
 
 ### Combining three mappers output:
 
-**Script:** [FST_combine3mappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/FST_combine3mappers.R)
+***Script:** [FST_combine3mappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/FST_combine3mappers.R)*
 
 Will take the split comparisons, and combine those specified into one FST file with the average Fst between the three mappers 
 
@@ -165,32 +165,42 @@ Some combined data files of interest can be found here: [Fst_combinedComparisons
  
  - comparison betweeen control and selection lines
  
- **Script:** [Fst_Plots.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Fst_Plots.R)
+***Script:** [Fst_Plots.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Fst_Plots.R)*
+ 
+ Can create plots by running script with data available from [Fst Data Repo](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/Fst_combinedComparisons)
  
 Generation 38:
-[meanFst for F38](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/F38_meanFstPlot.png)
+![meanFst for F38](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/meanFst_gen38_Sel:Con.png)
 
 Generation 77: 
-[meanFst for F77](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/F77_meanFstPlot.png)
+![meanFst for F77](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/meanFst_gen77_Sel:Con.png)
 
 Generation 115: 
-![meanFst for F115](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/F115_meanFstPlot.png)
+![meanFst for F115](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/meanFst_gen115_Sel:Con.png)
+
+### Additional Plots:
+
+If necessary: method to create sauron plots
+
+Also includes details on quantiles used for positional cut offs later
+
+**Sauron Plots:** [Fst_SauronPlots.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Fst_SauronPlots.R)
 
 _______________________________________________________________________________________
 
 ## 3) per SNP logistic regression for each treatment by generation
 
-**Long Script:*** [novo_regression_model_LONGSCRIPT.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_regression_model_LONGSCRIPT.sh)
+***Long Script:*** [novo_regression_model_LONGSCRIPT.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/novo_regression_model_LONGSCRIPT.sh)*
 
 This script will break the chromosomal .sync files (i.e split per chromosome) into smaller managable pieces and run through multiple R scripts while removing intermediates:
 
 The R script below are within the long script:
 
-**R script to covert sync to Count data:** [Sync_to_counts.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Sync_to_counts.R)
+***R script to covert sync to Count data:** [Sync_to_counts.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Sync_to_counts.R)*
 
 Creates a file with the counts for the major and minor frequency (based on ancestor) that can run through the model
 
-**R script for running the model for each position along the chromosome:** [Counts_to_model.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Counts_to_model.R)
+***R script for running the model for each position along the chromosome:** [Counts_to_model.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Counts_to_model.R)*
 
 In long script: this is set up to work in parallel, having each chromosome running at the same time (6 instances running over 11 sections)
 
@@ -206,23 +216,23 @@ modlist_2[[i]] <-
 
 **After** long script complete:
 
-**R script to combine all the split chromosome pieces back into one chromosome:** [Combine_model_Chromo.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Combine_model_Chromo.R)
+***R script to combine all the split chromosome pieces back into one chromosome:** [Combine_model_Chromo.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Combine_model_Chromo.R)*
 
 
 Recreates one chromosomal file
 
-**R script to combine three mappers into one file** [model_combine3mappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_combine3mappers.R)
+***R script to combine three mappers into one file** [model_combine3mappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_combine3mappers.R)*
 
 Combines each of BWA-mem, Bowtie2 and Novoalign files into one file (keeping all information)
 
 
-**R script to write files with coeffefficent of interest** [model_3mappersTxG.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_3mappersTxG.R)
+***R script to write files with coeffefficent of interest** [model_3mappersTxG.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_3mappersTxG.R)*
 
 This script (choosing Treatment by Generation effect) keeps positions that are present in all three files (i.e position needs to be mapped three times)
 
-**Rscript: Combine into one genome:** [combinemodelCHROMO.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/combinemodelCHROMO.R)
+***Rscript: Combine into one genome:** [combinemodelCHROMO.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/combinemodelCHROMO.R)*
 
-**Rscript: P.adjust:** [model_p.adjustFDR.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_p.adjustFDR.R)
+***Rscript: P.adjust:** [model_p.adjustFDR.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_p.adjustFDR.R)*
 
 Adjust the p-values found for multiple comparisons: adjusting with FDR 
 
@@ -239,11 +249,11 @@ ________________________________________________________________________________
 
 ## 4) estimates of selection coefficient at each position for selection and control lineages using [poolSeq](https://github.com/ThomasTaus/poolSeq) R package:
 
-**Script:** [poolseq_SelectionCoefficientEstimate.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_SelectionCoefficientEstimate.sh)
+***Script:** [poolseq_SelectionCoefficientEstimate.sh](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_SelectionCoefficientEstimate.sh)*
 
 This script will break the sync files into two treatment .sync files, break apart these .sync files (smaller sized files), and run through a R script to run poolSeq Package (poolSeq_selectonCoeff.R)
 
-**Rscript: Running poolseq** [poolSeq_selectionCoeff.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolSeq_selectionCoeff.R)
+***Rscript: Running poolseq** [poolSeq_selectionCoeff.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolSeq_selectionCoeff.R)*
 
 Note: to run, check poolseq is available, if not, source all PoolSeq scripts available from Taus git page. 
 
@@ -251,11 +261,11 @@ Also, to run with modified Sync files which changes the spacing,  a personal rea
 
 This function is taken from the poolseq scripts from [poolSeq](https://github.com/ThomasTaus/poolSeq) with slight modifications.
 
-**Rscript: combining CSV files:** [combinePoolseqCSV.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/combinePoolseqCSV.R)
+***Rscript: combining CSV files:** [combinePoolseqCSV.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/combinePoolseqCSV.R)*
 
 (I was impatiant and did this individually: ex. [combine_poolseq_individual_Chromo.R](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_scripts/combine_poolseq_individual_Chromo.R)
  
-**Rscript: To combine the mapppers:** [poolseq_combinemappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_combinemappers.R)
+***Rscript: To combine the mapppers:** [poolseq_combinemappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_combinemappers.R)*
 
 This will combine mappers (only Novoalign and BWA mem) and keep the mean selection coefficient (mean diff <0.001) and the less significant p-value (i.e max P-value). (does write a second .csv used for positions in plotting)
 
@@ -282,15 +292,15 @@ ________________________________________________________________________________
 
 Finding positions overlapping with the significant model output (after adjustments), the signifciant selection coefficients (only found in selection lines and not in controls) and that are found within a Fst window with a sufficiently high value.
 
-**Selection Coeffients positions:** [positions_selCoef.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_selCoef.R)
+***Selection Coeffients positions:** [positions_selCoef.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_selCoef.R)*
  
- **Fst Window Ranges:** [positions_FST.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_FST.R)
+ ***Fst Window Ranges:** [positions_FST.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_FST.R)*
  
- **Positions from model:** [positions_Model.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Model.R)
+ ***Positions from model:** [positions_Model.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Model.R)*
  
  The above three scripts are sourced in the position extract script
  
- **Extract positions:** [positions_Extract.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Extract.R)
+ ***Extract positions:** [positions_Extract.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Extract.R)*
  
  The positions that are found in both the model output and with a significant selection coefficient are first found, then checked if they are present within the 500 bp window from FST.
  
@@ -327,7 +337,7 @@ python /home/paul/Gowinda/Gff2Gtf.py --input /home/paul/episodicData/index_dir/d
 
 Gene associations with [FuncAssociate](http://llama.mshri.on.ca/funcassociate/download_go_associations)
 
-3) **Candidate Positions** found [here](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Extract.R))
+3) ***Candidate Positions** found [here](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Extract.R)*
 
 Need to write .txt like this:
 ```
@@ -379,7 +389,7 @@ Take positions of each chromosome and take a .sync file to only keep the positio
 
 With BWA -mem output sync files
 
-**Rscript:** [extract_sig_Chromo_positions.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/extract_sig_Chromo_positions.R)
+***Rscript:** [extract_sig_Chromo_positions.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/extract_sig_Chromo_positions.R)*
 
 Use these .sync files and can look at trajectories:
 
@@ -393,6 +403,6 @@ Sync files:
 'bwa_X_positions.sync'
 ```
 
-**Rscript:** [trajectories_plots.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/trajectories_plots.R)
+***Rscript:** [trajectories_plots.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/trajectories_plots.R)*
 
 Script will output different varients of trajectory plots of positions.
