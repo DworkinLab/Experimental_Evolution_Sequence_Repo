@@ -2,17 +2,18 @@
 require(data.table)
 require(tidyverse)
 # Based on starting from scripts:
+source('multiplotFunction.R')
 setwd("../Data/positions_syncfiles")
 dir <- getwd()
 patty <- c('2L_positions.sync','2R_positions.sync','3L_positions.sync','3R_positions.sync','X_positions.sync')
 
 #Loop if all want to be done quickly (better to do individually (within loop))
-#for (patt in patty){
+for (patt in patty){
   
   # To run individual Chromosomes: unhash wanted chromosome and hash loop start and end (#for (patt in patty){) & (})
   # patt <- '2L_positions.sync'
   # patt <- '2R_positions.sync'
-  patt <- '3L_positions.sync'
+  #patt <- '3L_positions.sync'
   # patt <- '3R_positions.sync'
   # patt <- 'X_positions.sync'
   
@@ -130,7 +131,6 @@ patty <- c('2L_positions.sync','2R_positions.sync','3L_positions.sync','3R_posit
   
   }
 
-  head(DFS)
   DFS_2 <- DFS %>%
     group_by(chr,pos,Treatment, Generation) %>%
     summarise(mean_ancminFreq=mean(na.omit(AncMinFreq)), 
@@ -141,26 +141,54 @@ patty <- c('2L_positions.sync','2R_positions.sync','3L_positions.sync','3R_posit
               minallele_3=(MinorAllele[3])
               )
   
-  head(DFS_2)
   episodic_group_2 <- DFS_2 %>%
     group_by(chr, Treatment, Generation) %>%
     summarise(mean_minFreq=mean(na.omit(mean_minFreq)), 
               mean_majFreq=mean(na.omit(mean_majFreq)), 
               ddif_min = mean(abs(mean_ancminFreq-mean_minFreq)))
   
-  Ppplt <- ggplot(data = episodic_group_2, aes(x=Generation, y=ddif_min, color=Treatment)) +  geom_point(size=2, alpha = 0.95, position=position_dodge(width=10)) + scale_colour_manual(values=c("#56B4E9", "#E69F00", 'grey30', 'firebrick3')) + ggtitle(Chromosome)
-  
-  print(Ppplt)
-  
- Ppplt_2 <-  ggplot(data = episodic_group_2, aes(x=as.factor(Generation), y=ddif_min, color=Treatment, group=Treatment)) + geom_line() + geom_point(size=2, alpha = 0.95, position=position_dodge(width=0)) + scale_colour_manual(values=c("#56B4E9", "#E69F00", 'grey30', 'firebrick3')) + ggtitle(Chromosome) + xlab('Generation') + ggtitle(Chromosome)
+  assign(paste("Chromosome", Chromosome, 'meanDiff', sep = "_"), episodic_group_2)
+  assign(paste("Chromosome", Chromosome, 'positions', sep = "_"), DFS_2)
+  }
+
+# List all Data frames created:
+myDIFF <- ls(pattern = "*meanDiff")
+mypos <- ls(pattern='*positions')
+
+  # 2nd plot is better version of this one:
+  #Ppplt <- ggplot(data = episodic_group_2, aes(x=Generation, y=ddif_min, color=Treatment)) +  geom_point(size=2, alpha = 0.95, position=position_dodge(width=10)) + scale_colour_manual(values=c("#56B4E9", "#E69F00", 'grey30', 'firebrick3')) + ggtitle(Chromosome)
+  #print(Ppplt)
+
+
+for (Ddif in myDIFF) {
+  ddat <- eval(parse(text = Ddif))
+  Chromo <- ddat$chr[1]
+ Ppplt_2 <-  ggplot(data = ddat, aes(x=as.factor(Generation), y=ddif_min, color=Treatment, group=Treatment)) + geom_line(show.legend = T) + geom_point(size=2, alpha = 0.95, position=position_dodge(width=0), show.legend = F) + scale_colour_manual(values=c("#56B4E9", "#E69F00", 'grey30', 'firebrick3')) + ggtitle(Chromosome) + xlab('Generation') +
+   ylab('Mean Diff from Gen0') + theme(legend.position="bottom") +
+   ggtitle(Chromo)
  
   print(Ppplt_2)
-  
-  
-  randPos <- sample(DFS_2$pos, 1)
-  episodic_pos <-DFS_2[ which(DFS_2$pos==randPos), ]
+  assign(paste("Plot", Chromo, 'meanDiff', sep = "_"), Ppplt_2)
+}
+
+multiplot(Plot_2L_meanDiff, Plot_2R_meanDiff, Plot_3L_meanDiff, Plot_3R_meanDiff, cols=2)  
+
+multiplot(Plot_2L_meanDiff, Plot_2R_meanDiff, cols=2 )
+multiplot(Plot_3L_meanDiff, Plot_3R_meanDiff, cols=2)
+Plot_empty <- NULL
+multiplot(Plot_X_meanDiff, Plot_empty,  cols=2)
+
+# Do indivdually:
+poosition <- Chromosome_2L_positions
+#poosition <- Chromosome_2R_positions
+#poosition <- Chromosome_3L_positions
+#poosition <- Chromosome_3R_positions
+#poosition <- Chromosome_X_positions
+
+  randPos <- sample(poosition$pos, 1)
+  episodic_pos <-poosition[ which(poosition$pos==randPos), ]
   #pos <- 4961389
-  #episodic_pos <- DFS_2[which(DFS_2$pos==pos),]
+  #episodic_pos <- poosition[which(poosition$pos==pos),]
   pplot_3 <- ggplot(data = episodic_pos, aes(x=as.factor(Generation), y=mean_minFreq, color=Treatment, group=Treatment)) + 
     scale_colour_manual(values=c("#56B4E9", "#E69F00", 'grey30', 'firebrick3')) +
     ggtitle(paste("Chromosome=", Chromosome, '  ', "Position=", randPos, sep = "")) +
@@ -169,5 +197,5 @@ patty <- c('2L_positions.sync','2R_positions.sync','3L_positions.sync','3R_posit
   
   print(pplot_3)
 
-  #}
+
 
