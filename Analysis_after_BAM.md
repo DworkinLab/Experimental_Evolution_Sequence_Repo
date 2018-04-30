@@ -232,12 +232,13 @@ This script (choosing Treatment by Generation effect) keeps positions that are p
 
 ***Rscript: Combine into one genome:** [combinemodelCHROMO.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/combinemodelCHROMO.R)*
 
+The output results in a file containing all chromosomes together with meanPvalue and maxPvalue (less sig. pos), but is to large for Github (available elsewhere).
+
+In the [output](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/model_output_p.Adjust) directory is the chromosomes after FDR adjustments and a number file for plotting.
+
 ***Rscript: P.adjust:** [model_p.adjustFDR.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/model_p.adjustFDR.R)*
 
-Adjust the p-values found for multiple comparisons: adjusting with FDR 
-
-The [output](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/model_output_p.Adjust) results in a file containing all chromosomes with p.values (and log10(p)) for each significant position after adjustments. (Note: Bonferroni adjustments kept as well as smaller file to practice further analysis with).
-
+Adjust the p-values found for multiple comparisons: adjusting with FDR (bonferroni and other p-value method available in script)
 
 
 **Plots**
