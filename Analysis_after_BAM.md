@@ -405,4 +405,13 @@ Script will output different varients of trajectory plots of positions.
 
 If the different mappers want to be combined, can be done with this ***Rscript:**[trajectoryPlots_combineMappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/trajectoryPlots_combineMappers.R)*
 
-Ex. 
+
+**Mean Difference (of three mappers minor frequencies) from the mean ancestral frequency averaged for all candidate positions** (plots made in [above script](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/trajectoryPlots_combineMappers.R).
+
+![Difference_2](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/Trajectory_Chromo2_diff.png)
+
+![Difference_3](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/Trajectories_Chromo3_Diff.png)
+
+![Difference_X](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/Trajectories_X_Diff.png)
+
+**Positional Trajectories**
