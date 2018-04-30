@@ -1,5 +1,5 @@
 # Extract positions of interest:
-## Assuming a list or data frame is available with all positions:
+## Assuming a list or data frame is available with all positions: 4 not done (no positions)
 
 require('data.table')
 
@@ -14,70 +14,108 @@ siglist <- fread('/home/paul/Positions/X_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
 ## Read in data:
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_X.sync')
-	#episodic_data_novo <- fread('/home/paul/episodicData/novoalign/novo_mpileup/') # Does not exist
-	#episodic_data_bowtie <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_X.sync') # Does not exist
+episodic_data_novo <- fread('/home/paul/episodicData/novoalign/novo_mpileup/novo_episodic_X.sync')
+episodic_data_bowtie <- fread('/home/paul/episodicData/bowtie/mpileup_dir/bowtie2_episodic_X.sync')
 
 colnames(episodic_data_bwa) <- name.Columns
-	#colnames(episodic_data_novo) <- name.Columns
-	#colnames(episodic_data_bowtie) <- name.Columns
+colnames(episodic_data_novo) <- name.Columns
+colnames(episodic_data_bowtie) <- name.Columns
 ## Keep rows with Position in list
 
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
-	#episodic_counts_novo <- episodic_data_novo[episodic_data_novo$Position %in% siglist_2 ,]
-	#episodic_counts_bowtie <- episodic_data_bowtie[episodic_data_bowtie$Position %in% siglist_2 ,]
+episodic_counts_novo <- episodic_data_novo[episodic_data_novo$Position %in% siglist_2 ,]
+episodic_counts_bowtie <- episodic_data_bowtie[episodic_data_bowtie$Position %in% siglist_2 ,]
 
 ## write csv file with only positions
 write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_X_positions.sync")
-	#write.csv(episodic_counts_novo, file="/home/paul/episodicData/Positions/novo_X_positions.sync")
-	#write.csv(episodic_counts_bowtie, file="/home/paul/episodicData/Positions/bowtie_X_positions.sync")
+write.csv(episodic_counts_novo, file="/home/paul/Positions/novo_X_positions.sync")
+write.csv(episodic_counts_bowtie, file="/home/paul/Positions/bowtie_X_positions.sync")
 
-## remove:
-rm(episodic_data_bwa)
-rm(siglist)
-rm(episodic_counts_bwa)
 
 ### 2R Chromosome:
 siglist <- fread('/home/paul/Positions/2R_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
+
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_2R.sync')
+episodic_data_novo <- fread('/home/paul/episodicData/novoalign/novo_mpileup/novo_episodic_2R.sync') # Does not exist
+episodic_data_bowtie <- fread('/home/paul/episodicData/bowtie/mpileup_dir/bowtie2_episodic_2R.sync') # Does not exist
+
 colnames(episodic_data_bwa) <- name.Columns
+colnames(episodic_data_novo) <- name.Columns
+colnames(episodic_data_bowtie) <- name.Columns
+## Keep rows with Position in list
+
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
+episodic_counts_novo <- episodic_data_novo[episodic_data_novo$Position %in% siglist_2 ,]
+episodic_counts_bowtie <- episodic_data_bowtie[episodic_data_bowtie$Position %in% siglist_2 ,]
+
+## write csv file with only positions
 write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_2R_positions.sync")
-rm(episodic_data_bwa)
-rm(siglist)
-rm(episodic_counts_bwa)
+write.csv(episodic_counts_novo, file="/home/paul/Positions/novo_2R_positions.sync")
+write.csv(episodic_counts_bowtie, file="/home/paul/Positions/bowtie_2R_positions.sync")
+
 
 ### 2L Chromosome:
 siglist <- fread('/home/paul/Positions/2L_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
+
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_2L.sync')
+episodic_data_novo <- fread('/home/paul/episodicData/novoalign/novo_mpileup/novo_episodic_2L.sync') # Does not exist
+episodic_data_bowtie <- fread('/home/paul/episodicData/bowtie/mpileup_dir/bowtie2_episodic_2L.sync') # Does not exist
+
 colnames(episodic_data_bwa) <- name.Columns
+colnames(episodic_data_novo) <- name.Columns
+colnames(episodic_data_bowtie) <- name.Columns
+
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
-write.csv(episodic_counts_bwa, file="//home/paul/Positions/bwa_2L_positions.sync")
-rm(episodic_data_bwa)
-rm(siglist)
-rm(episodic_counts_bwa)
+episodic_counts_novo <- episodic_data_novo[episodic_data_novo$Position %in% siglist_2 ,]
+episodic_counts_bowtie <- episodic_data_bowtie[episodic_data_bowtie$Position %in% siglist_2 ,]
+
+write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_2L_positions.sync")
+write.csv(episodic_counts_novo, file="/home/paul/Positions/novo_2L_positions.sync")
+write.csv(episodic_counts_bowtie, file="/home/paul/Positions/bowtie_2L_positions.sync")
+
+
+
 
 ### 3R Chromosome:
 siglist <- fread('/home/paul/Positions/3R_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
+
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_3R.sync')
+episodic_data_novo <- fread('/home/paul/episodicData/novoalign/novo_mpileup/novo_episodic_3R.sync') # Does not exist
+episodic_data_bowtie <- fread('/home/paul/episodicData/bowtie/mpileup_dir/bowtie2_episodic_3R.sync') # Does not exist
+
 colnames(episodic_data_bwa) <- name.Columns
+colnames(episodic_data_novo) <- name.Columns
+colnames(episodic_data_bowtie) <- name.Columns
+
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
-write.csv(episodic_counts_bwa, file="//home/paul/Positions/bwa_3R_positions.sync")
-rm(episodic_data_bwa)
-rm(siglist)
-rm(episodic_counts_bwa)
+episodic_counts_novo <- episodic_data_novo[episodic_data_novo$Position %in% siglist_2 ,]
+episodic_counts_bowtie <- episodic_data_bowtie[episodic_data_bowtie$Position %in% siglist_2 ,]
+
+write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_3R_positions.sync")
+write.csv(episodic_counts_novo, file="/home/paul/Positions/novo_3R_positions.sync")
+write.csv(episodic_counts_bowtie, file="/home/paul/Positions/bowtie_3R_positions.sync")
 
 ### 3L Chromosome:
 siglist <- fread('/home/paul/Positions/3L_positions_maxP.csv', h=T)
 siglist_2 <- as.list(siglist$int)
+
 episodic_data_bwa <- fread('/home/paul/episodicData/mpileup_dir/episodic_data_3L.sync')
+episodic_data_novo <- fread('/home/paul/episodicData/novoalign/novo_mpileup/novo_episodic_3L.sync') # Does not exist
+episodic_data_bowtie <- fread('/home/paul/episodicData/bowtie/mpileup_dir/bowtie2_episodic_3L.sync') # Does not exist
+
 colnames(episodic_data_bwa) <- name.Columns
+colnames(episodic_data_novo) <- name.Columns
+colnames(episodic_data_bowtie) <- name.Columns
+
 episodic_counts_bwa <- episodic_data_bwa[episodic_data_bwa$Position %in% siglist_2 ,]
+episodic_counts_novo <- episodic_data_novo[episodic_data_novo$Position %in% siglist_2 ,]
+episodic_counts_bowtie <- episodic_data_bowtie[episodic_data_bowtie$Position %in% siglist_2 ,]
+
 write.csv(episodic_counts_bwa, file="/home/paul/Positions/bwa_3L_positions.sync")
-rm(episodic_data_bwa)
-rm(siglist)
-rm(episodic_counts_bwa)
+write.csv(episodic_counts_novo, file="/home/paul/Positions/novo_3L_positions.sync")
+write.csv(episodic_counts_bowtie, file="/home/paul/Positions/bowtie_3L_positions.sync")
 
 ### 4 Chromosome: Empty!!!
