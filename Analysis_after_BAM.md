@@ -330,7 +330,7 @@ Finding positions overlapping with the significant model output (after adjustmen
    X  - 73 - 86
  ```
  
- **Positional Overlay with Poolseq plot:** [ositionOverlay_Poolseq.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positionOverlay_Poolseq.R)
+ **Positional Overlay with Poolseq plot:** [positionOverlay_Poolseq.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positionOverlay_Poolseq.R)
  
  Selection coefficients are those unique to selection lines, black dots = candidate positions]
  ![overlay](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/Overlay_Poolseq_and_positions.png)
