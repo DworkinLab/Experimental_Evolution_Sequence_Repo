@@ -415,3 +415,8 @@ If the different mappers want to be combined, can be done with this ***Rscript:*
 ![Difference_X](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/Trajectories_X_Diff.png)
 
 **Positional Trajectories**
+
+The minor frequency changes over generations of a random sampled position for each chromosome: can recreate at bottom of [script](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/trajectoryPlots_combineMappers.R)
+
+![4positionson4chromosomes](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/Trajectories_Rand_pos_2_3.png)
+
