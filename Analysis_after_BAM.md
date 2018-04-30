@@ -403,4 +403,6 @@ Use these .sync files and can look at trajectories
 
 Script will output different varients of trajectory plots of positions.
 
+If the different mappers want to be combined, can be done with this ***Rscript:**[trajectoryPlots_combineMappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/trajectoryPlots_combineMappers.R)*
+
 Ex. 
