@@ -102,6 +102,7 @@ This script can be updated and modified for different details on the plots
 
 ### In R, run the function for each .pi file
 
+Source [Pi_plot_function.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Pi_plot_function.R) and run files located in [data](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data) directory.
 
 Ex. (currently have title details removed in function)
 ```
