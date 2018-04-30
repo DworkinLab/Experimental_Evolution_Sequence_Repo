@@ -60,8 +60,7 @@ Pi_PlotFunction <- function(x, y) {
     scale_x_discrete(limits=c(1049, 3185, 5277, 7443, 9952, 11359), labels = c("X", "2L", '2R', '3L', '3R', "4")) +
     theme(text = element_text(size=20), 
           axis.text.x= element_text(size=15), axis.text.y= element_text(size=15)) +
-    scale_colour_manual(values=c("#56B4E9", "#E69F00", 'grey30', 'grey46', 'wheat3', 'lemonchiffon4')) +
-    ggtitle(z2)
+    scale_colour_manual(values=c("#56B4E9", "#E69F00", 'grey30', 'grey46', 'wheat3', 'lemonchiffon4')) #+ggtitle(z2)
   
   return(Pi_plot_2)
 }
