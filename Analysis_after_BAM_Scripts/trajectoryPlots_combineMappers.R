@@ -1,6 +1,8 @@
 ## Combine three mappers: trajectories
-
-setwd("~/Bioinformatics/Analysis_EpisodicSequenceData_2018/Trajectories_2")
+require(data.table)
+require(tidyverse)
+# Based on starting from scripts:
+setwd("../Data/positions_syncfiles")
 dir <- getwd()
 patty <- c('2L_positions.sync','2R_positions.sync','3L_positions.sync','3R_positions.sync','X_positions.sync')
 
