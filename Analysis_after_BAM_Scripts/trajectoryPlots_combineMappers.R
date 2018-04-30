@@ -179,11 +179,20 @@ Plot_empty <- NULL
 multiplot(Plot_X_meanDiff, Plot_empty,  cols=2)
 
 # Do indivdually:
-poosition <- Chromosome_2L_positions
+#poosition <- Chromosome_2L_positions
+#CHROMO <- '2L'
+
 #poosition <- Chromosome_2R_positions
+#CHROMO <- '2R'
+
 #poosition <- Chromosome_3L_positions
-#poosition <- Chromosome_3R_positions
+#CHROMO <- '3L'
+
+poosition <- Chromosome_3R_positions
+CHROMO <- '3R'
+
 #poosition <- Chromosome_X_positions
+#CHROMO <- 'X'
 
   randPos <- sample(poosition$pos, 1)
   episodic_pos <-poosition[ which(poosition$pos==randPos), ]
@@ -191,11 +200,17 @@ poosition <- Chromosome_2L_positions
   #episodic_pos <- poosition[which(poosition$pos==pos),]
   pplot_3 <- ggplot(data = episodic_pos, aes(x=as.factor(Generation), y=mean_minFreq, color=Treatment, group=Treatment)) + 
     scale_colour_manual(values=c("#56B4E9", "#E69F00", 'grey30', 'firebrick3')) +
-    ggtitle(paste("Chromosome=", Chromosome, '  ', "Position=", randPos, sep = "")) +
+    ggtitle(paste("Chromosome=", CHROMO, '  ', "Position=", randPos, sep = "")) +
     geom_line() + xlab("Generation") +
     geom_point(size=3, alpha=0.5, position = position_dodge(width=0.1))
   
   print(pplot_3)
 
+  #pplot_2L <- pplot_3
+  #pplot_2R <- pplot_3
+  #pplot_3R <- pplot_3
+  #pplot_3L <- pplot_3
+  
+  multiplot(pplot_2L, pplot_2R, pplot_3L, pplot_3R, cols=2)
 
 
