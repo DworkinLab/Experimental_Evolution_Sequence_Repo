@@ -186,6 +186,12 @@ Also includes details on quantiles used for positional cut offs later
 
 **Sauron Plots:** [Fst_SauronPlots.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Fst_SauronPlots.R)
 
+
+***Gen 38:***
+![38Sauron](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/FST_sauronPlot_Gen38.png)
+
+***Gen 115:***
+![115Sauron](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/FST_sauronPlot_Gen115.png)
 _______________________________________________________________________________________
 
 ## 3) per SNP logistic regression for each treatment by generation
@@ -323,6 +329,11 @@ Finding positions overlapping with the significant model output (after adjustmen
    4  - 0  - 0
    X  - 73 - 86
  ```
+ 
+ **Positional Overlay with Poolseq plot:** [ositionOverlay_Poolseq.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positionOverlay_Poolseq.R)
+ 
+ Selection coefficients are those unique to selection lines, black dots = candidate positions]
+ ![overlay](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/Overlay_Poolseq_and_positions.png)
 _______________________________________________________________________________________
 
 ## 6) Running Gowinda for gene analysis from positions
