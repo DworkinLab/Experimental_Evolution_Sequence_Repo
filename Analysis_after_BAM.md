@@ -388,6 +388,25 @@ java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar \
 
 Found .... nothing for both.... ??? Need to rerun possibly or try SNPeff
 
+End of output
+```
+04/30/18 13:54:24: Finished - Candidate SNPs are a subset of all SNPs
+04/30/18 13:54:24: Computing the number of genes and gene sets available for testing
+04/30/18 13:56:25: Total genes in annotation: 12243; Annotated genes with SNP: 0 (genes without SNP are ignored).
+04/30/18 13:56:25: Total gene sets: 9998; Gene sets with at least one gene having a SNP: 0  (gene sets without a single gene having a SNP are ignored)
+04/30/18 13:56:25: Starting 100000 simulations for 261 candidate SNPs using 8 threads
+04/30/18 13:56:25: Will randomly draw SNPs unless the number of random SNPs equals the number of candidate SNPs
+04/30/18 13:56:25: This may take a while. Switch to the detailed log mode if you want to see the progress
+04/30/18 13:56:28: Finished simulations
+04/30/18 13:56:28: Estimating significance of the candidate SNPs
+04/30/18 13:56:28: Starting FDR correction
+04/30/18 13:56:28: Simulations detected SNPs in genes corresponding to 0 gene sets
+04/30/18 13:56:28: Candidate SNPs show an association with 0 gene sets
+04/30/18 13:56:45: Starting to write results to file: /home/paul/Gowinda/results_snp_2000ud.txt
+04/30/18 13:56:45: Finished writing to file
+04/30/18 13:56:45: FINISHED - Thank you for using Gowinda
+```
+
 _______________________________________________________________________________________
 ## 7) Trajectory of regions of interest based on model output
 
