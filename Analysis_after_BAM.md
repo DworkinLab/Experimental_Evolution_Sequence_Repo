@@ -272,14 +272,16 @@ This function is taken from the poolseq scripts from [poolSeq](https://github.co
  
 ***Rscript: To combine the mapppers:** [poolseq_combinemappers.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_combinemappers.R)*
 
-This will combine mappers (only Novoalign and BWA mem) and keep the mean selection coefficient (mean diff <0.001) and the less significant p-value (i.e max P-value). (does write a second .csv used for positions in plotting)
+This will combine mappers (only Novoalign and BWA mem) and keep the mean selection coefficient (mean difference between mappers < 0.001) and the less significant p-value (i.e max P-value). (does write a second .csv used for positions in plotting).
 
+
+The output is to large for github, so the beginning of [poolseq_PlotSelCoef.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_PlotSelCoef.R) script shows how this was broken down into files based on the p.adjust method (found in [Data](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/poolseq_outputs) directory) as well as lengths for plotting.
+
+To plot the data: [poolseq_PlotSelCoef.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/poolseq_PlotSelCoef.R)
 
 Plot: control vs. selection lines selection coefficients. Red == control and other colours correspond to chromosomes of selection lines selection coefficients 
 
-![poolseqoverlaycontrols](https://github.com/PaulKnoops/episodicSequenceData/blob/master/Analysis_after_sync_2018_plots/overlay_CON:SEL_poolseq.png)
-
-
+![poolseqoverlaycontrols](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/poolseq_SelCoef_overlay.png)
 
 Notes: 
 
@@ -309,8 +311,7 @@ Finding positions overlapping with the significant model output (after adjustmen
  
  The positions that are found in both the model output and with a significant selection coefficient are first found, then checked if they are present within the 500 bp window from FST.
  
- Ends with a number of positons for each chromosome: have this for keeping the mean p-value from selcoef and model as well as less signifciant (max) p-value.
- 
+ Ends with a number of positons for each chromosome and for a full chromosome candidate positons [found here](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/Positions): have this for less signifciant (max) p-value (used for both selcoef and model) as well as for the mean p. The overlap with max_p and mean_p is shown below: went with the more stringent method (maxP) for candidate positions. Can combine the chromosomal meanP.csv files to create all candidates with mean P values.
 
  ```
  Number of positions
@@ -342,9 +343,9 @@ python /home/paul/Gowinda/Gff2Gtf.py --input /home/paul/episodicData/index_dir/d
 
 Gene associations with [FuncAssociate](http://llama.mshri.on.ca/funcassociate/download_go_associations)
 
-3) ***Candidate Positions** found [here](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_Extract.R)*
+3) ***Candidate Positions** found [here](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/positions_candidates_Full.R)*
 
-Need to write .txt like this:
+Need to write .txt like this: tab deliminated text file
 ```
 write.table(FILE, file='candidatePos.txt', sep ="\t", col.names = F, row.names = F)
 ```
@@ -361,18 +362,18 @@ write.table(Xc, file='positions.txt', sep ="\t", col.names = F, row.names = F)
 
 5) **Running Gowinda**
 
-Note: already FDR adjust!
+Note: already FDR adjusts within Gowinda!
 
-For details: See Gowinda source forge tutorial Example 1: Basic Example
+For details: See [Gowinda source forge tutorial](https://sourceforge.net/p/gowinda/wiki/Tutorial/) Example 1: Basic Example
 ```
-java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar --snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync --candidate-snp-file /home/paul/Gowinda/candidatePos.txt --gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt --annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf --simulations 100000 --min-significance 1 --gene-definition gene --threads 8 --output-file results_gene_gene.txt --mode gene --min-genes 1
+java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar --snp-file --snp-file /home/paul/Gowinda/positions.txt --candidate-snp-file /home/paul/Gowinda/candidatePos.txt --gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt --annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf --simulations 100000 --min-significance 1 --gene-definition gene --threads 8 --output-file results_gene_gene.txt --mode gene --min-genes 1
 ```
 
-For details: See Gowinda source forge tutorial Example 3: high resolution GO term enrichment
+For details: See [Gowinda source forge tutorial](https://sourceforge.net/p/gowinda/wiki/Tutorial/) Example 3: high resolution GO term enrichment
 
 ```
 java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar \
-	--snp-file /home/paul/episodicData/novoalign/novo_mpileup/novo_episodic.sync \
+	--snp-file /home/paul/Gowinda/positions.txt \
 	--candidate-snp-file /home/paul/Gowinda/candidatePos.txt \
 	--gene-set-file /home/paul/Gowinda/funcassociate_go_associations.txt \
 	--annotation-file /home/paul/Gowinda/dmel-all-r5.57.gtf \
@@ -385,29 +386,21 @@ java -Xmx32g -jar /home/paul/Gowinda/Gowinda-1.12.jar \
 	--min-genes 1
 ```
 
-Found .... nothing?
+Found .... nothing for both.... ??? Need to rerun possibly or try SNPeff
 
 _______________________________________________________________________________________
 ## 7) Trajectory of regions of interest based on model output
 
-Take positions of each chromosome and take a .sync file to only keep the positions of interest. 
+Take positions of [each chromosome](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/Positions) and take a .sync file to only keep the positions of interest. 
 
-With BWA -mem output sync files
 
 ***Rscript:** [extract_sig_Chromo_positions.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/extract_sig_Chromo_positions.R)*
 
-Use these .sync files and can look at trajectories:
+Use these .sync files and can look at trajectories
 
-Sync files:
-```
-'bwa_2L_positions.sync'
-'bwa_2R_positions.sync'
-'bwa_3L_positions.sync'
-'bwa_3R_positions.sync'
-'bwa_4_positions.sync' # Empty
-'bwa_X_positions.sync'
-```
 
 ***Rscript:** [trajectories_plots.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/trajectories_plots.R)*
 
 Script will output different varients of trajectory plots of positions.
+
+Ex. 
