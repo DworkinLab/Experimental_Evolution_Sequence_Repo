@@ -103,10 +103,18 @@ This script can be updated and modified for different details on the plots
 ### In R, run the function for each .pi file
 
 
-Ex. (currently have title detaile 
+Ex. (currently have title details removed in function)
 ```
 Pi_PlotFunction('FILE.pi', "Plot Title Details")
 ```
+
+Example outputs:
+
+**Ancestral Pi Plot with Bowtie2 mapping**
+![BowtiePiPlot Ancestor](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/PiPlot_Ancestor_Bowtie.png)
+
+**Ancestral Pi Plot with Novoalign mapping**
+![Novo_PiPlot_anc](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/PiPlot_Ancestor_novoalign.png)
 _______________________________________________________________________________________
 
 ## 2) Fst on windows of each pairwise comparision of sequences
