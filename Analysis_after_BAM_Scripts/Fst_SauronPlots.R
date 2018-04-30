@@ -1,24 +1,24 @@
 # Sauron Plots and quantiles:
-
+require(tidyverse)
 
 # Read in data:
 # 115
-# 1:2 = ConR1:ConR2, 1:4 = SelR1:ConR1, 3:4 = SelR1:SelR2, 2:3 = SelR2:ConR2
-#CompR1 <- fread('/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/FST/combined_fst_1:4.csv')
-#CompR2 <- fread('/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/FST/combined_fst_2:3.csv')
+# 1:2 = ConR1:ConR2, 1:3 = SelR1:ConR1, 3:4 = SelR1:SelR2, 2:4 = SelR2:ConR2
+#CompR1 <- fread('../Data/Fst_combinedComparisons/combined_fst_1:3.csv')
+#CompR2 <- fread('../Data/Fst_combinedComparisons/combined_fst_2:4.csv')
 
-#Controls <- fread('/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/FST/combined_fst_1:2.csv')
-#Selections <- fread('/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/FST/combined_fst_3:4.csv')
+#Controls <- fread('../Data/Fst_combinedComparisons/combined_fst_1:2.csv')
+#Selections <- fread('../Data/Fst_combinedComparisons/combined_fst_3:4.csv')
 
 
 
 #38: 5:6 = ConR1:ConR2, 7:5 = SelR1:ConR1, 7:8 = SelR1:SelR2, 6:8 = SelR2:ConR2
 
-CompR1 <- fread('/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/FST/combined_fst_5:7.csv')
-CompR2 <- fread('/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/FST/combined_fst_6:8.csv')
+CompR1 <- fread('../Data/Fst_combinedComparisons/combined_fst_5:7.csv')
+CompR2 <- fread('../Data/Fst_combinedComparisons/combined_fst_6:8.csv')
 
-Controls <- fread('/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/FST/combined_fst_5:6.csv')
-Selections <- fread('/Users/paulknoops/Bioinformatics/Analysis_EpisodicSequenceData_2018/FST/combined_fst_7:8.csv')
+Controls <- fread('../Data/Fst_combinedComparisons/combined_fst_5:6.csv')
+Selections <- fread('../Data/Fst_combinedComparisons/combined_fst_7:8.csv')
 
 
 
@@ -42,6 +42,12 @@ ppplt <- ggplot(datComp, aes(x=meanFst.x, y=meanFst.y)) +
   ylab(expression(atop("ConR2:SelR2[Red]", 'SelR1:SelR2[Grey]')))
 print(ppplt)
 
+
+#Can put as one plot if wanted
+#source('multiplotFunction.R')
+#ppl_115 <- ppplt
+#ppl_38 <- ppplt
+#multiplot(ppl_115, ppl_38, cols=1)
 
 #Quantiles for interest sake:
 
