@@ -102,7 +102,8 @@ This script can be updated and modified for different details on the plots
 
 ### In R, run the function for each .pi file
 
-Ex. 
+
+Ex. (currently have title detaile 
 ```
 Pi_PlotFunction('FILE.pi', "Plot Title Details")
 ```
