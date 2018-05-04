@@ -110,6 +110,8 @@ Outputs of data were able to be loaded here:
 
 ***Bowtie Pi data:** [Pi_Bowtie](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/Pi_Bowtie)*
 
+***BWA Pi data:**[Pi_BWA](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data/Pi_BWA)*
+
 ### Create plots of tajima Pi data
 
 This R function can run each .pi file to output a plot
@@ -120,7 +122,7 @@ This script can be updated and modified for different details on the plots
 
 ### In R, run the function for each .pi file
 
-Source [Pi_plot_function.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Pi_plot_function.R) and run files located in [data](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data) directory.
+Source [Pi_plot_function.R](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/Pi_plot_function.R) and run files located in [data](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/tree/master/Data) directory for each mappers Pi plots.
 
 Ex. (currently have title details removed in function)
 ```
@@ -134,7 +136,11 @@ Example outputs:
 
 **Ancestral Pi Plot with Novoalign mapping**
 ![Novo_PiPlot_anc](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/PiPlot_Ancestor_novoalign.png)
-_______________________________________________________________________________________
+
+**Ancestral Pi Plot with BWA mapping**
+![Bwa_piPlot_anc](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/PiPlot_ancestor_BWA.png)
+
+______________________________________________________________________________________
 
 ## 2) Fst on windows of each pairwise comparision of sequences
 
@@ -455,6 +461,8 @@ If the different mappers want to be combined, can be done with this ***Rscript:*
 
 
 **Mean Difference (of three mappers minor frequencies) from the mean ancestral frequency averaged for all candidate positions** (plots made in [above script](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/Analysis_after_BAM_Scripts/trajectoryPlots_combineMappers.R).
+
+Not: Differences odd b/c mean of three mappers... possibly?
 
 ![Difference_2](https://github.com/PaulKnoops/Experimental_Evolution_Sequence_Repo/blob/master/plots/Trajectory_Chromo2_diff.png)
 
