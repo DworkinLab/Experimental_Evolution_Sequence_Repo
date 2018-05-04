@@ -4,6 +4,21 @@
     # Comparison files split previously
     # have the known comprisons of interest (change in patty <- )
    
+```
+#1: F115ConR1_TAGCTT_novo_merge_novo_final_realigned.bam
+#2: F115ConR2_GGCTAC_novo_merge_novo_final_realigned.bam
+#3: F115SelR1_GTTTCG_novo_merge_novo_final_realigned.bam
+#4: F115SelR2_GTGGCC_novo_merge_novo_final_realigned.bam
+#5: F38ConR1_ATCACG_novo_merge_novo_final_realigned.bam
+#6: F38ConR2_TTAGGC_novo_merge_novo_final_realigned.bam
+#7: F38SelR1_ACTTGA_novo_merge_novo_final_realigned.bam
+#8: F38SelR2_GATCAG_novo_merge_novo_final_realigned.bam
+#9: F77ConR1_ATGTCA_novo_merge_novo_final_realigned.bam
+#10: F77ConR2_ATTCCT_novo_merge_novo_final_realigned.bam
+#11: F77SelR1_TTAGGC_novo_merge_novo_final_realigned.bam
+#12: F77SelR2_GATCAG_novo_merge_novo_final_realigned.bam
+#13: MGD3_SO_CAGATC_novo_merge_novo_final_realigned.bam
+```
 ## Packages:
   require(data.table)
   require(tidyverse)
